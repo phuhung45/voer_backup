@@ -1,0 +1,184 @@
+{% load i18n %}
+{% load thumbnail %}
+{% load vpw_filters %}
+
+<!-- TOP -->
+<div id="top" class="navbar navbar-default navbar-fixed-top">
+    <div class="container main">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle btn-search {% if is_home %} hidden-home {% endif %}" data-toggle="collapse" data-target=".search-collapse">
+                <span class="icon-search"></span>
+            </button>
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand logo" href="/">Project name</a>
+        </div>
+        <div class="search-collapse collapse {% if is_home %} hidden-home {% endif %}">
+            <div class="div-input-search left clear">
+                <form action="/search/" method="GET">
+                    <input type="text" class="input-search-top" name="keyword" value="{{ keyword }}">
+                    <input type="submit" class="hfbtn-common search-index" value="search">
+                </form>
+            </div>
+        </div>
+        <div id="main-menu" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav main-menu-nav">
+                <li class="">
+                  <a href="/">{% trans 'Home' %}</a>
+                </li>
+                <li>
+                  <a href="/browse">{% trans 'Browse All' %}</a>
+                </li>
+                <li>
+                  {% if request.LANGUAGE_CODE == 'vi' %}
+                  <a href="/content/dong-gop">{% trans 'Contribute' %}</a>
+                  {% else %}
+                  <a href="/content/contribute">{% trans 'Contribute' %}</a>
+                  {% endif %}
+                </li>
+                <li>
+                  {% if request.LANGUAGE_CODE == 'vi' %}
+                  <a href="/content/gioi-thieu">{% trans 'About Us' %}</a>
+                  {% else %}
+                  <a href="/content/about-us">{% trans 'About Us' %}</a>
+                  {% endif %}
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right list-right-top hidden-sm">
+                {% if not is_home %}
+                <li id="input-search-right-top">
+                    <form action="{% url 'search' %}" method="GET">
+                        <input type="text" class="input-search-right-top" name="keyword" value="{{ keyword }}">
+                    </form>
+                </li>
+                {% else %}
+                <li>&nbsp;</li>
+                {% endif %}
+
+                    <li>
+                        <div class="collapse navbar-collapse bs-js-navbar-collapse">
+                            <ul>
+                                <li>
+                                    <form name="setLangVietnamese" action="/language/setlang/" method="POST">{% csrf_token %}
+                                        <input name="next" type="hidden" value="{{ request.path }}" />
+                                        <input type="hidden" name="language" value="vi" />
+                                        <a href="#" onclick="document.setLangVietnamese.submit();return false;"><img src="{{ STATIC_URL }}images/vi.jpg" alt="Tiếng Việt" title="Tiếng Việt" /></a>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form name="setLangEnglish" action="/language/setlang/" method="POST">{% csrf_token %}
+                                        <input name="next" type="hidden" value="{{ request.path }}" />
+                                        <input type="hidden" name="language" value="en" />
+                                        <a href="#" onclick="document.setLangEnglish.submit();return false;"><img src="{{ STATIC_URL }}images/us.png" alt="English" title="English" /></a>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                    <li>
+                        <div class="collapse navbar-collapse bs-js-navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown loged-top-user">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" role="button" id="drop-top-language">
+                                        {% with y=user.author.author_id|stringformat:"s" avatar=user.author.author_id|get_author_avatar %}
+                                        {% if avatar %}
+                                            {% thumbnail "http://"|add:request.META.HTTP_HOST|add:"/user/avatar/"|add:y|add:"?l="|add:avatar "32x32" as im %}
+                                                <img src="{{ im.url }}">
+                                            {% empty %}
+                                                <span class="logo-user-right-top left"></span>
+                                            {% endthumbnail %}
+                                        {% else %}
+                                            <span class="logo-user-right-top left"></span>
+                                        {% endif %}
+                                        {% endwith %}
+
+                                        {{ user.username }}
+                                        <span class="caret"></span>
+                                    </a>
+                                    <div aria-labelledby="drop-category-pd" role="menu" class="dropdown-menu">
+                                        <ul class="dropdown-menu-language">
+                                            <li>
+                                                <a href="{% url 'user_dashboard' %}">{% trans 'Account View' %}</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'logout' %}">{% trans 'Logout'%}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="/user/register">{% trans 'Register' %}</a>
+                    </li>
+                    <li class="">
+                        <a class="btn-top-login" data-toggle="modal" data-target="#modal-user-login">{% trans 'Login' %}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <!--END RIGHT TOP-->
+    </div>
+</div>
+<!-- END TOP -->
+
+{% if not user.is_authenticated %}
+<!-- Modal -->
+<div class="modal fade" id="modal-user-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-login">
+    <div class="modal-content">
+      <div class="modal-header padding-content-15">
+        <h4 class="modal-title" id="myModalLabel">{% trans 'Login to VOER' %}</h4>
+      </div>
+      <form action="{% url 'authenticate' %}" method="POST" id="login-form">
+        <div class="modal-body padding-content-15">
+          {% csrf_token %}
+          <input type="text" class="form-control" placeholder="{% trans 'Username' %}" name="username">
+          <input type="password" class="form-control" placeholder="{% trans 'Password' %}" name="password">
+          <ul class="list-user-login-tools">
+              <li>
+                  <label class="checkbox checkbox-user-tool">
+                      <span class="icons">
+                          <span class="first-icon fui-checkbox-unchecked"></span>
+                          <span class="second-icon fui-checkbox-checked"></span>
+                      </span>
+                      <input type="checkbox" data-toggle="checkbox">
+                      {% trans 'Remember me' %}
+                  </label>
+              </li>
+              <li class="right">
+                  <a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans 'Forgot your password ?' %}</a>
+              </li>
+          </ul>
+          <button type="submit" class="btn btn-primary btn-login-submit">{% trans 'Login' %}</button>
+        </div>
+        <div class="modal-footer">
+          <a class="btn-form-login-signup left" href="/user/register">{% trans "Don't have an account? Sign up for VOER" %}</a>
+
+          <div class="alert-modal-login left padding-content-10 hidden"><!-- Add class 'hidden' to hide alert -->
+              <span class="left">{% trans 'The username or password is incorrect.' %}</span>
+          </div>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- <script>
+(jQuery)(function($){
+  $(document).on('click', '.btn-login-submit', function() {
+    Voer.Helper.login();
+    return false;
+  });
+});
+</script> -->
+{% endif %}

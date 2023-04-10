@@ -1,0 +1,211 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+{% load vpw_filters %}
+{% load thumbnail %}
+
+{% block titleSite %}Vietnam OER, Tài nguyên giáo dục Mở Việt Nam{% endblock %}
+
+{% block slide %}
+    <style type="text/css">
+        
+        @media only screen and (max-width: 767px) {
+            .footer .row {
+                margin-right: 0px!important;
+                display: flex;
+            }
+            .footer-message {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .module-view-content iframe {
+                width: 100% !important;
+                height: auto !important;
+            }
+            .collection-details-text {
+                width: 100%;
+            }
+            .title--collection {
+                height: 40px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+            }
+            .collection-mainpage-cover img {
+                height: auto;
+                width: 100%;
+            }
+            .collection-mainpage-cover {
+                width: 100%;
+                height: auto;
+            }
+            .author-collection {
+                height: 40px;
+            }
+            .browser-author-img {
+                height: auto;
+                width: 100%;
+            }
+            .browser-author-img img {
+                height: auto;
+            }
+    </style>
+<!-- SLIDE -->
+<div id="slider" class="slide1">
+    <div class="slider-content main container">
+        <div class="slider-content-left left">
+            <h1 class="text-header-slider-left left clear">{% trans "Vietnam Open Educational Resources" %}</h1>
+            <div class="div-input-search left clear">
+              <script>
+                (function() {
+                var cx = '001654820113317997538:4e99y9devu8';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                '//www.google.com/cse/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+                })();
+              </script>
+              <gcse:searchbox-only></gcse:searchbox-only>
+                {% comment %}
+                <form action="{% url 'search' %}" method="GET">
+                    <input type="text" class="input-search-top" name="keyword" />
+                    <input type="submit" class="hfbtn-common search-index" value="search">
+                </form>
+                {% endcomment %}
+            </div>
+            <div class="text-slider-left left clear">
+                {% blocktrans with module_count=material_statistic.module_count collection_count=material_statistic.collection_count person_count=material_statistic.person_count %}Discover {{ module_count }} modules, {{ collection_count }} collections from {{ person_count }} authors{% endblocktrans %}
+            </div>
+        </div>
+        <div class="hidden-xs hidden-sm hidden-md hfslide right">
+            <div id="generic" class="slide active" style="display:block;">
+                <div class="book"></div>
+                <div class="cloud1"></div>
+                <div class="cloud2"></div>
+                <div class="tree1"></div>
+                <div class="tree2"></div>
+                <div class="tree3"></div>
+            </div>
+            <div id="slide2" class="slide" style="display:none;">
+                <div class="box"></div>
+                <div class="icon1"></div>
+                <div class="icon2"></div>
+                <div class="icon3"></div>
+                <div class="icon4"></div>
+                <div class="icon5"></div>
+                <div class="icon6"></div>
+                <div class="icon7"></div>
+                <div class="icon8"></div>
+            </div>
+            <div id="slide3" class="slide" style="display:none;">
+                <div class="macbook"></div>
+                <div class="group-icon1"></div>
+                <div class="group-icon2"></div>
+                <div class="group-icon3"></div>
+                <div class="group-icon4"></div>
+                <div class="group-icon5"></div>
+                <div class="group-icon6"></div>
+                <div class="group-icon7"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END SLIDE -->
+{% endblock %}
+
+{% block base-content %}
+<div id="mainpage" class="main">
+  <div class="container">
+    <!-- LIST MODULE MAINPAGE -->
+    <h5 class="home-section-heading">
+      <i class="fa fa-university"></i>{% trans "Featured Materials" %}
+    </h5>
+    <div class="list-collection-mainpage row">
+        {% for material in materials_list %}
+        {% if material.material_type == 1 %}
+            {% url 'module_detail' title=material.title|normalize_string mid=material.material_id as material_url %}
+            {% trans "Module" as type_name %}
+        {% else %}
+            {% url 'collection_detail' title=material.title|normalize_string cid=material.material_id as material_url %}
+            {% trans "Collection" as type_name %}
+        {% endif %}
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <div class="icon-hot"></div>
+            <div class="collection-mainpage-cover">
+                <a href="{{ material_url }}" title="{{ type_name }}: {{ material.title }}">
+                {% if material.categories %}
+            <img src="{{STATIC_URL}}images/contents/{{material.material_id}}.jpg" alt="{{ type_name }}: {{ material.title }}"/>
+            {% else %}
+            <img src="{{STATIC_URL}}images/cat_other.jpg" alt="{{ type_name }}: {{ material.title }}"/>
+            {% endif %}
+                </a>
+            </div>
+            <div class="collection-mainpage-details clearfix">
+                <div class="hidden-xs hidden-sm collection-details-icon {% if material.material_type == 1 %}icon-puzzle{% else %}icon-book{% endif %} left"></div>
+                <div class="collection-details-text left">
+                    <div class="title-collection title--collection">
+                        <a href='{{ material_url }}' title="{{ type_name }}: {{ material.title }}">{{ material.title }}</a>
+                    </div>
+                    {% for person in material.author_list %}
+                    <div class="author-collection">
+                        <a href="{% url 'view_profile' person.pid %}" a>{{ person.pname }}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- LIST MODULE MAINPAGE -->
+    <!-- BROWSER -->
+    <div class="home-browse clearfix">
+      <a class="btn-browser-all left clear" href="{% url 'browse' %}" title="{% trans 'Browse All' %}">
+        {% trans 'Browse All' %}
+      </a>
+    </div>
+
+    <div class="mainpage-browser-content">
+      <h5 class="home-section-heading">
+        <i class="fa fa-user"></i>{% trans "Featured Authors" %}
+      </h5>
+      <div class="list-mainpage-browser list-author-mainpage row">
+      {% for material in person_list %}
+        <div class="col-xs-4 col-sm-3 col-md-2">
+            <div class="browser-author-img">
+                {% url 'get_avatar' material.id as avatar_url %}
+                {% thumbnail 'http://'|add:request.get_host|add:avatar_url "165x165" crop="center" as thumb %}
+                <a href="{% url 'view_profile' material.id %}" title="{{ material.fullname }}"><img src="{{ thumb.url }}" /></a>
+                {% endthumbnail %}
+            </div>
+            <div class="browser-author-details">
+                <div class="icon-browser-author"></div>
+                <div class="browser-author-name">
+                    <a href="{% url 'view_profile' material.id %}" title="{{ material.fullname }}">{% if material.fullname != NULL %} {{ material.fullname }} {% else %} {{ material.user_id }} {% endif %}</a>
+                </div>
+                <div class="browser-author-add">{% if material.affiliation != NULL %} {{ material.affiliation }} {% endif %}</div>
+            </div>
+        </div>
+      {% endfor %}
+      </div>
+      <div class="center clearfix">
+        <hr />
+        <div class="support-logo right">
+          <a href="http://www.jetbrains.com/pycharm/"><img src="http://www.jetbrains.com/pycharm/docs/logo_pycharm.png" alt="" /></a>
+        </div>
+        <div class="support-label right">
+          <span>{% trans "Development Support" %}:</span>
+        </div>
+      </div>
+    </div>
+    <!-- END BROWSER -->
+
+  </div>
+</div>
+{% block footer %}
+   {{ block.super }}
+{% endblock %}
+{% endblock %}

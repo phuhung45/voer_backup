@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}	
+{% load vpw_filters %}
+
+{% block meta-description %}
+{% if material %}
+<meta name="description" content="{{ material.description|strip|default:material.title }} (giáo trình - tài liệu - học liệu từ VOER)">
+{% endif %}
+{% endblock %}
+{% block keywords %}{% endblock %}
+
+{% block base-content %}
+  	<div id="mainpage" class="main mainpage-content">
+  		<div class="container voer-container">
+          {% block content %}{% endblock %}
+          {% include "base/footer.html" %}
+  		</div>
+  	</div>
+{% endblock %}

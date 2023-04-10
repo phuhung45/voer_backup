@@ -1,0 +1,34 @@
+{% load i18n %}
+{% load vpw_filters %}
+
+{% if similar_data %}
+    <ul class="list-content-extra">
+    {% for similar in similar_data %}
+    <li>
+        {% if similar.material_type == 1 %}
+        <a class="link-other-author-module left clear" alt="{{ similar.title }}" title="{{ similar.title }}" href="{% url 'module_detail' similar.title|normalize_string similar.material_id %}">{{ similar.title }}</a>
+        {% else %}
+        <a class="link-other-author-module left clear" alt="{{ similar.title }}" title="{{ similar.title }}" href="{% url 'collection_detail' similar.title|normalize_string similar.material_id %}">{{ similar.title }}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+    </ul>
+
+     <div class="hfcontrol clear">
+        <div class="right">
+            {% if prev_page %}
+            <a class="back ajax-ev" href="javascript:void(0)" data-ajax-url="/ajax/get-similars?mid={{ request.GET.mid }}&version={{ request.GET.version }}&page={{ prev_page }}" role="button" data-ajax-target="#module-similars">{% trans 'Back' %}</a>
+            {% else %}
+            <a class="back disabled" href="javascript:void(0)" data-ajax-url="" role="button">{% trans 'Back' %}</a>
+            {%  endif %}
+
+            {% if next_page %}
+            <a class="next ajax-ev" href="javascript:void(0)" data-ajax-url="/ajax/get-similars?mid={{ request.GET.mid }}&version={{ request.GET.version }}&page={{ next_page }}" role="button" data-ajax-target="#module-similars">{% trans 'Next' %}</a>
+            {% else %}
+            <a class="next disabled" href="javascript:void(0)" data-ajax-url="" role="button">{% trans 'Next' %}</a>
+            {% endif %}
+         </div>
+    </div>
+{% else %}
+<p>{% trans 'No data.' %}</p>
+{% endif %}

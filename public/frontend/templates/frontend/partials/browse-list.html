@@ -1,0 +1,187 @@
+{% load i18n %}
+{% load vpw_filters %}
+{% load thumbnail %}
+{% load staticfiles %}
+
+<script>
+$(document).ready(function(){
+    $('.hfbtn-save').click(function(){
+        //var $iditem = $(this).attr('metadata');
+        //$('div[metadata='+$iditem+']').toggleClass('hfvisible');
+        var btnSave = $(this);
+        var mid = $(this).attr('mid');
+        var version = $(this).attr('version');
+        var csrfmiddlewaretoken = Voer.Helper.getCookie('csrftoken');
+
+        $.post('/ajax/add_favorite', {mid: mid, version: version, csrfmiddlewaretoken: csrfmiddlewaretoken}, function(data){
+            if (data.status) {
+                btnSave.parents('.hfitem').find('.hflike').html(data.favorite_count);
+            }
+        });
+    });
+    $('.collection-save-hover').hover(
+        function() {
+        }, function() {
+            var $iditem = $(this).attr('metadata').replace('col-hover-', '');
+            var $selectItem = $('div[metadata=iditem-'+$iditem+']');
+
+            /*if ($selectItem.hasClass('hfvisible')) {
+            $selectItem.toggleClass('hfvisible');
+            }*/
+        }
+    );
+    $('.hfbtn-saveto-type').click(function(){
+        var $iditemCreate = $(this).attr('metadata');
+
+        $('div[metadata='+$iditemCreate+']').addClass('hfvisible');
+        //$('div[metadata='+$iditemCreate+']').hasClass('collection-saveto-type').toggleClass('hfvisible');
+    });
+});
+</script>
+
+{% if material_list %}
+
+    {% for material in material_list %}
+    {% if not material.status %}
+        {% if material.material_type == 1 %}
+            {% url 'module_detail' title=material.title|normalize_string mid=material.material_id as material_url %}
+            {% trans "Module" as type_name %}
+        {% else %}
+            {% url 'collection_detail' title=material.title|normalize_string cid=material.material_id as material_url %}
+            {% trans "Collection" as type_name %}
+        {% endif %}
+    {% else %}
+        {% if material.material_type == 1 %}
+            {% url 'user_module_detail' mid=material.id as material_url %}
+            {% trans "Module" as type_name %}
+        {% else %}
+            {% url 'user_collection_detail' cid=material.id as material_url %}
+            {% trans "Collection" as type_name %}
+        {% endif %}
+    {% endif %}
+
+    <div class="material-list-entry clearfix">
+      {% if has_actions %}
+      <div class="checkbox-select-items left" style="margin-right: 10px;">
+        <input type="checkbox" title="{% trans 'Select/Deselect Item' %}" value="{{ material.id }}" />
+      </div>
+      {% endif %}
+
+      {% if material.user_id %}
+        <div class="material-cover-wrapper left">
+          <div class="material-cover left">
+            {% with y=material.id|stringformat:"s" %}
+            {% thumbnail "http://"|add:request.META.HTTP_HOST|add:"/user/avatar/"|add:y "50x50" crop="center 20%" as im %}
+                <img src="{{ im.url }}">
+            {% empty %}
+                <img src="{{ STATIC_URL }}images/author1_detail.jpg" style="width:60px; height:60px;">
+            {% endthumbnail %}
+            {% endwith %}
+          </div>
+          <div class="material-tiny-icon">
+            <img src="{% static 'images/icon-people-24.png' %}">
+          </div>
+        </div>
+        <div class="material-brief left">
+            <h5 class="">
+                <a alt="{{ material.title }}" title="{{ material.title }}" href="{% url 'view_profile' material.id %}">{{ material.title }}</a>
+            </h5>
+            <p></p>
+        </div>
+      {% else %}
+      {% with title=material.title|safe %}
+      <div class="material-cover-wrapper left">
+        <div class="material-cover left">
+          <a title="{{ type_name }}: {{ title }}" alt="{{ type_name }}: {{ title }}" href="{{ material_url }}">
+            {% if material.image %}
+                {% thumbnail material.image "50x50" crop="center" as material_image %}
+                    <img src="{{ material_image.url }}">
+                {% empty %}
+                    <img src="{% static 'images/white.jpg' %}">
+                {% endthumbnail %}
+            {% elif material.categories.0.0 %}
+                {% static 'images/cat' as catimg_prefix %}
+                {% with 'http://'|add:request.get_host|add:catimg_prefix|add:material.categories.0.0|add:".jpg" as catimg_url %}
+                    {% thumbnail catimg_url "50x50" crop="center" as mimage %}
+                        <img src="{{ mimage.url }}">
+                    {% endthumbnail %}
+                {% endwith %}
+            {% else %}
+                {% static 'images/' as catimg_prefix %}
+                {% with 'http://'|add:request.get_host|add:catimg_prefix|add:"cat_other.jpg" as catimg_url %}
+                    {% thumbnail catimg_url "50x50" crop="center" as mimage %}
+                        <img src="{{ mimage.url }}">
+                    {% endthumbnail %}
+                {% endwith %}
+            {% endif %}
+          </a>
+        </div>
+
+        <div class="material-tiny-icon">
+            <img src="{% if material.material_type == 2 %}{% static 'images/icon-book-24.png' %}{% else %}{% static 'images/icon-puzzle-24.png' %}{% endif %}">
+        </div>
+      </div>
+        <div class="material-brief left">
+            <h5 class="{% if material.material_type == 2 %}collection-title{% else %}module-title{% endif %}">
+                <a title="{{ type_name }}: {{ title }}" alt="{{ type_name }}: {{ title }}" href="{{ material_url }}"> {{ title }} </a>
+            </h5>
+            <p>{{ material.description|safe|truncatewords:28 }}</p>
+            <div class="brief-published">
+                
+
+                {% if material.rating_count %}
+                    <a href="javascript:void(0)">
+                        <i class="icon icon-rating" title="{% trans 'Rate' %}"></i>
+
+                        {% if material.rating_count > 1 %}
+                        <span class="stats-count" title="{% trans 'Rate' %}">{{ material.rate_fake }} <span title="{% trans 'Rating count' %}">({{ material.rating_count }} {% trans 'rates' %})</span></span>
+                        {% else %}
+                        <span class="stats-count" title="{% trans 'Rate' %}">{{ material.rate_fake }} <span title="{% trans 'Rating count' %}">({{ material.rating_count }} {% trans 'rate' %})</span></span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+
+                {% if material.category_list %}
+                    {% for category in material.category_list %}
+                        <a href="{% url 'browse' %}?categories={{ category.cid }}">{% trans category.cname %}</a>
+                    {% endfor %}
+                {% elif material.categories.0.1 %}
+                    <a href="{% url 'browse' %}?categories={{ material.categories.0.0 }}">{% trans material.categories.0.1 %}</a>
+                {% endif %}
+
+                {% if material.person_list %}
+                    {% for person in material.person_list %}
+                        <a href="{% url 'view_profile' person.pid %}">{{ person.pname }}</a>
+                    {% endfor %}
+                {% elif 'author' in material %}
+                    <a href="{% url 'view_profile' material.author.0.0 %}">{{ material.author.0.1 }}</a>
+                {% endif %}
+
+                {% if material.view_count %}
+                    <a href="javascript:void(0)" title="{% trans 'View count' %}">
+                        <i class="icon icon-view"></i>
+                        <span class="stats-count">{{ material.view_count.view }}</span>
+                    </a>
+                {% endif %}
+
+                <!-- {% if material.favorite_count %}
+                    <a href="javascript:void(0)">
+                        <i class="icon icon-favorite {% if material.is_favorited %}active{% endif %}" {% if material.is_favorited %}data-added-favorite="true"{% endif %} data-material-id="{{ material.material_id }}" data-material-version="{{ material.version }}" title="{% trans 'Add to favorite' %}"></i>
+                        <span class="stats-count" title="{% trans 'Favorite count' %}">{{ material.favorite_count.favorite }}</span>
+                    </a>
+                {% endif %} -->
+
+                {% if material.modified %}
+                     <a title="{% trans 'Uploaded date' %}">{{ material.modified|date:"Y-m-d H:i:s" }}</a>
+                {% endif %}
+            </div>
+        </div>
+      {% endwith %}
+      {% endif %}
+    </div>
+
+    {% endfor %}
+{% else %}
+<p class="no-data">{% trans 'No data.' %}</p>
+{% endif %}
+{% include "base/pager.html" %}

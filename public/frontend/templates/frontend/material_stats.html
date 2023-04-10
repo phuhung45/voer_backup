@@ -1,0 +1,28 @@
+{% extends "base/base-content.html" %}
+
+{% load i18n %}
+{% load thumbnail %}
+{% load vpw_filters %}
+
+{% block titleSite %}{% trans "User profile" %}{% endblock %}
+
+{% block content %}
+
+<!-- filter top -->
+<div class="hfuser-top">
+    <h1>{% if author.fullname %}{% if author.title %}{{ author.title }} {% endif %}{{ author.fullname }} {% else %} {{ user.username }} {% endif %}</h1>
+    {% include 'frontend/partials/author_info.html' %}
+</div>
+{% include 'frontend/block/left_block_user.html' %}
+<div class="col-lg-1 col-lg-1-custom right-row">
+    <div id="fitertop-browserall" class="hffitertop" style="text-align: center">
+        <h4>{{ title }}</h4>
+    </div>
+
+    <div class="hfitems">
+    {% with material_list=materials %}
+        {% include 'frontend/partials/browse-list.html' %}
+    {% endwith %}
+    </div>
+ </div>
+{% endblock %}

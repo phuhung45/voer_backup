@@ -1,0 +1,58 @@
+{% load i18n %}
+{% load vpw_filters %}
+<div class="col-md-3 left-row">
+                <div class="hfuser-tools">
+    <div class="smallbox-common smallbox-button">
+        <div class="hfbtn-create module"><a href="{% url 'create_module' %}">{% trans 'Create a new module' %}</a></div>
+        <div class="hfbtn-create mass-module"><a href="{% url 'create_mass_modules' %}">{% trans 'Create module in Batch' %}</a></div>
+        <div class="hfbtn-create collection"><a href="{% url 'create_collection' %}">{% trans 'Create a new collection' %}</a></div>
+    </div>
+    <div class="smallbox-common smallbox-link">
+        <div class="hfbtn-create">
+            <i class="icon-common">&nbsp;</i>
+            <a href="{% url 'user_dashboard' %}">{% trans 'Published items' %}{{ user.author.author_id|get_published_count }}</a>
+        </div>
+
+        <div class="hfbtn-create">
+            <i class="icon-common">&nbsp;</i>
+            <a href="{% url 'get_unpublish' %}">{% trans 'Unpublished items' %}{{ user.author.user_id|get_unpublished_count }}</a>
+        </div>
+
+        <div class="hfbtn-create">
+            <i class="icon-common">&nbsp;</i>
+            <a href="{% url 'get_favorite' %}">{% trans 'Favorite items' %}{{ user.author.author_id|get_favorites_count }}</a>
+        </div>
+    </div>
+    <div class="smallbox-common smallbox-link">
+        <div class="hfbtn-create">
+            <i class="icon-common">&nbsp;</i>
+            <a href="{% url 'edit_profile' %}">{% trans 'Profile Information' %}</a>
+        </div>
+        <!--
+        <div class="content">
+            <ul>
+                <li><a href="{% url 'edit_profile' %}">{% trans 'Profile Information' %}</a></li>
+            </ul>
+        </div>
+        -->
+    </div>
+    {% if request.user.is_superuser %}
+    <div class="smallbox-common smallbox-link">
+        <div class="title">
+            {% trans 'Administration' %}
+        </div>
+        <div class="content">
+            <ul>
+                <li><a href="{% url 'most-viewed' %}">{% trans 'Most viewed' %}</a></li>
+                <li><a href="{% url 'most-faved' %}">{% trans 'Most favourite' %}</a></li>
+                <li><a href="{% url 'most-rated' %}">{% trans 'Most rated' %}</a></li>
+                <li><a href="{% url 'featured-materials' %}">{% trans 'Featured materials' %}</a></li>
+                <li><a href="{% url 'featured-authors' %}">{% trans 'Featured authors' %}</a></li>
+                <li><a href="{% url 'import-user' %}">{% trans 'Import user' %}</a></li>
+                <li><a href="{% url 'settings' %}">{% trans 'Settings' %}</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
+</div>

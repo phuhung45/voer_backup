@@ -1,0 +1,34 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% if material.material_id %}
+<div class="download-reuse">
+    <div class="module-block-header" id="pdf-download">
+        <div class="icon-module icon-download"></div>
+        <div class="title-module"> {% trans 'Download' %} </div>
+    </div>
+    <div class="module-block-header">
+        <a href="{% url 'user_module_reuse' material.material_id material.version %}">
+        <div class="icon-module icon-checkout"></div>
+        <div class="title-module"> {% trans 'Reuse' %} </div>
+        </a>
+    </div>
+    <div id="more-download" style="display: none;">
+        <ul>
+            {% if collection.material_id %}
+                <li class="collection"><a href="{% url 'get_pdf' collection.material_id collection.version %}" title="{{ collection.title }}">{% trans 'PDF Collection' %}</a></li>
+                <li class="collection"><a href="/epub/{{collection.material_id}}/{{collection.version}}" title="{{ collection.title }}">{% trans 'EPUB Collection' %}</a></li>
+                {% if 'material_id' in material %}
+                <li class="module"><a href="{% url 'get_pdf' material.material_id material.version %}" title="{{ material.title }}">{% trans 'PDF Module' %}</a></li>
+                <li class="module"><a href="/epub/{{material.material_id}}/{{material.version}}" title="{{ material.title }}">{% trans 'EPUB Module' %}</a></li>
+                {% endif %}
+            {% else %}
+                <li class="module"><a href="{% url 'get_pdf' material.material_id material.version %}" title="{{ material.title }}">{% trans 'PDF Module' %}</a></li>
+                <li class="module"><a href="/epub/{{material.material_id}}/{{material.version}}" title="{{ material.title }}">{% trans 'EPUB Module' %}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endif %}

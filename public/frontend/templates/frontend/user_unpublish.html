@@ -1,0 +1,95 @@
+{% extends "base/base-content.html" %}
+
+{% load i18n %}
+{% load thumbnail %}
+{% load vpw_filters %}
+
+{% block titleSite %}{% trans "Unpublish material" %}{% endblock %}
+
+{% block content %}
+
+<!-- filter top -->
+<div class="hfuser-top">
+    <h1>{% trans 'My VOER' %}</h1>
+    {% include 'frontend/partials/author_info.html' %}
+</div>
+{% include 'frontend/block/left_block_user.html' %}
+<div class="col-lg-1 col-lg-1-custom right-row">
+    <div id="fitertop-browserall" class="hffitertop">
+        <div class="dropdown left">
+            <a class="filter-title arrow-down" data-toggle="dropdown" href="#">{% trans 'Sort by' %}</a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="{{ request.path }}?sort=title">{% trans 'Title' %}</a></li>
+                <!--<li><a>{% trans 'Relevance' %}</a></li>
+                <li><a>{% trans 'Rating' %}</a></li>-->
+                <li><a href="{{ request.path }}?sort=-modified">{% trans 'Date' %}</a></li>
+            </ul>
+        </div>
+        <div class="fiterbutton left">
+            <div class="btn-delete-items display_none" title="{% trans 'Delete' %}">&nbsp;</div>
+            <form action="{% url 'delete_unpublish' %}" method="post" id="delete-unpublish-form">
+                {% csrf_token %}
+                <input type="hidden" id="delete-material-id" name="material_ids" value="">
+            </form>
+        </div>
+    </div>
+
+    <div class="hfitems material-unpublished-items">
+        {% if messages %}
+        <div style="padding:10px 20px 0;overflow:hidden;">
+            <div class="alert alert-success">
+                <ul>
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        {% with material_list=materials has_actions=True %}
+            {% include 'frontend/partials/browse-list.html' %}
+        {% endwith %}
+    </div>
+ </div>
+<script>
+function hasItemChecked(){
+    var hasChecked = false;
+    $('.checkbox-select-items input').each(function(){
+        if ($(this).is(':checked')) {
+            hasChecked = true;
+        }
+    });
+    return hasChecked;
+}
+$(document).ready(function(){
+    if (hasItemChecked()) {
+        $('.btn-delete-items').show();
+    }
+    $(document).on('click', '.checkbox-select-items input', function(){
+        var $buttonDeleteItem = $('.btn-delete-items');
+        if (hasItemChecked()) {
+            $buttonDeleteItem.fadeIn();
+        } else {
+            $buttonDeleteItem.fadeOut();
+        }
+    });
+    $(document).on('click', '.btn-delete-items', function(){
+        var ids = new Array();
+        var csrfmiddlewaretoken = Voer.Helper.getCookie('csrftoken');
+
+        $('.checkbox-select-items input').each(function(){
+            if ($(this).is(':checked')) {
+                ids.push($(this).val());
+            }
+        });
+
+        $('#delete-material-id').val(ids.join(','));
+        var delete_confirm = confirm('{% trans 'Are you sure drop this item(s)?' %}');
+        if (delete_confirm == true) {
+            $('#delete-unpublish-form').submit();
+        }
+    });
+});
+</script>
+{% endblock %}

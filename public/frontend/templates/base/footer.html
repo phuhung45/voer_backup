@@ -1,0 +1,47 @@
+{% load i18n staticfiles %}
+
+<!-- Modal -->
+<div class="modal fade" id="voer-message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">VOER message</h4>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="footer">
+  <div class="row">
+    <div class="logo-footer col-md-1">
+      <img src="{% static 'images/logo-footer.png' %}" alt="" />
+    </div>
+    <div class="footer-message col-md-11">
+      <p>{% trans 'The Vietnam Open Educational Resources (VOER) is supported by <a href="http://www.vnfoundation.org">The Vietnam Foundation</a> and powered by <a href="http://www.hanoispring.com">Hanoi Spring Platform</a>. Except where otherwise noted, content created on this site is licensed under a Creative Commons Attribution 3.0 License.' %}</p>
+      <div class="right">
+        <img src="{% static 'images/cc.logo.png' %}" alt="" />
+      </div>
+      <ul class="list-footer-social left">
+          <li><a href="https://www.facebook.com/voer.edu.vn" rel="nofollow"><img src="{% static 'images/facebook-connect-button.png' %}" alt="VOER on Facebook" /></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% if voer_fb_id %}
+<!-- END RIGHT ROW -->
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/vi_VN/all.js#xfbml=1&appId={{ voer_fb_id }}";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+{% endif %}
+
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-533acc7f382c20b0"></script>

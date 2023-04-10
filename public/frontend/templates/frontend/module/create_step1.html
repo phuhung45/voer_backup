@@ -1,0 +1,61 @@
+{% extends "base/base-content.html" %}
+
+{% load i18n %}
+
+{% block titleSite %}Create module{% endblock %}
+
+{% block content %}        
+<!-- filter top -->
+<div class="hfcreate">
+    <div class="breakcump left">
+        <span>{% trans 'Create Content' %}</span>
+        <span class="icon"></span>
+        <span class="current">{% trans 'Create a new module' %}</span>
+    </div>
+    <div class="hfstep">
+        <ul>
+            <li class="active"><a id="hfstep-1"><div class="step">1</div> {% trans 'License' %}</a></li>
+            <li><a id="hfstep-2"><div class="step">2</div>{% trans 'Metadata' %}</a></li>
+            <li><a id="hfstep-3"><div class="step">3</div>Content</a></li>
+        </ul>
+    </div>
+</div>
+{% include "frontend/block/left_block_user.html" %}
+<div class="col-lg-1 col-lg-1-custom right-row">
+    <div class="hfcreate-1">
+        <form method="post">
+            {% csrf_token %}
+            {% if errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        <li>{{ errors|escape }}</li>
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="content">
+                {{ license | safe }}
+            </div>
+            <div class="accept-license">
+                <label class="checkbox checkbox-user-tool">
+                <span class="icons">
+                    <span class="first-icon fui-checkbox-unchecked"></span>
+                    <span class="second-icon fui-checkbox-checked"></span>
+                </span>
+                <input data-toggle="checkbox" type="checkbox" name="agree">
+                {% trans 'I have read the above, and I agree to license this new work under its terms.' %}
+            </label>
+
+            </div>
+            <script>
+                $(document).ready(function(){
+                    $('.checkbox').click(function(){
+                        $('.hfbtn-next').toggleClass('hfbtn-active');
+                    });
+                });
+            </script>
+            <input type="hidden" name="step" value="1" />
+            <button class="btn hfbtn-common hfbtn-next right">{% trans 'Next' %}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

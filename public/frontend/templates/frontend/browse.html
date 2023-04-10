@@ -1,0 +1,395 @@
+{% extends "base/base-content.html" %}
+{% load i18n %}
+{% load vpw_filters %}
+{% load thumbnail %}
+{% load staticfiles %}
+
+{% block titleSite %}Browse{% endblock %}
+
+{% block js %}
+	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-select.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/application.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- filter top -->
+
+
+<!--div class="content-wrapper"-->
+<div class="container">
+<div class="row">
+    <!-- left content -->
+    <div class="col-lg-9 left-row">
+        <script>
+        $(document).ready(function(){
+            $(document).on('click', '.dropdown-menu-sort a', function(){
+                $('#filter-sort').val($(this).attr('rel'));
+
+                if($(this).attr('rel')=='modified') {
+                    $(this).attr('rel', '-modified');
+                   $(this).html('Ngày mới nhất');
+                    //$(this).addClass('edit-sort');
+                    $('.dropdown-menu-sort a').removeClass('edit-sort').filter('a[rel^="-modified"]').addClass('edit-sort');
+                   // $('.filter-title').html('Ngày a-z');
+                }
+                else if($(this).attr('rel') == '-modified'){
+                   $(this).attr('rel', 'modified');
+                   $(this).html('Ngày cũ nhất');
+                    $('.dropdown-menu-sort a').removeClass('edit-sort').filter('a[rel^="modified"]').addClass('edit-sort');
+                    //$('.filter-title').html('Ngày z-a');
+                }
+                else if($(this).attr('rel')=='title') {
+                    $(this).attr('rel', '-title');
+                    $(this).html('Tiêu đề a-z');
+                    // $(this).addClass('edit-sort');
+                   // $('.filter-title').html('Tiêu đề a-z');
+                   $('.dropdown-menu-sort a').removeClass('edit-sort').filter('a[rel^="-title"]').addClass('edit-sort');
+                }
+                else if($(this).attr('rel') == '-title'){
+                    $(this).attr('rel', 'title');
+                    $(this).html('Tiêu đề z-a'); 
+                    // $(this).addClass('edit-sort');
+                   // $('.filter-title').html('Tiêu đề z-a');
+                   $('.dropdown-menu-sort a').removeClass('edit-sort').filter('a[rel^="title"]').addClass('edit-sort');
+                }
+                ajaxGetMaterialByCondition();
+            });
+            $('.hfbtn-save').click(function(){
+                var btnSave = $(this);
+                var mid = $(this).attr('mid');
+                var version = $(this).attr('version');
+                var csrfmiddlewaretoken = Voer.Helper.getCookie('csrftoken');
+
+                $.post('/ajax/add_favorite', {mid: mid, version: version, csrfmiddlewaretoken: csrfmiddlewaretoken}, function(data){
+                    if (data.status) {
+                        btnSave.parents('.hfitem').find('.hflike').html(data.favorite_count);
+                    }
+                });
+            });
+        });
+        </script>
+
+        <div class="hfitems active">
+            <div id="materials" class="material-list">
+
+                {% with material_list=materials.results %}
+                    {% include 'frontend/partials/browse-list.html' %}
+                {% endwith %}
+
+                {% comment %}
+                <div class="hfitem">
+                   <div class="collection-save-hover" metadata="col-hover-{{ material.material_id }}">
+                        {% if user.is_authenticated %}
+                        <div class="collection-save">
+                            <div><a class="hfbtn-save" metadata="iditem-{{ material.material_id }}" mid="{{ material.material_id }}" version="{{ material.version }}">{% trans 'Add to my favourite' %}</a></div>
+                        </div>
+                        <div class="collection-saveto" metadata="iditem-{{ material.material_id }}">
+                            <div class="collection-saveto-title">{% trans 'My Favorites' %}</div>
+                            <div class="collection-saveto-content">
+
+                            </div>
+                            <div class="collection-saveto-create" metadata="iditem-1-create">
+                                <a class="hfbtn-saveto-type" metadata="iditem-1-create">{% trans 'Create new' %}</a>
+                            </div>
+                            <div class="collection-saveto-type" metadata="iditem-1-create">
+                                <input onclick="" class="saveto-type" title="Create new" value="Create new" alt="Create new" type="text">
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="collection-mainpage-cover">
+                        {% if material.categories.0.0 %}
+                       <img src="{{STATIC_URL}}images/cat{{material.categories.0.0}}.jpg"/>
+                       {% else %}
+                       <img src="{{STATIC_URL}}images/cat_other.jpg"/>
+                       {% endif %}
+                    </div>
+                    <div class="collection-mainpage-details">
+                        <div class="info-collection">
+                            <div class="title-collection">
+                                <a title="{{ type_name }}: {{ material.title }}" alt="{{ type_name }}: {{ material.title }}" href="{{ material_url }}">{{ material.title }}</a>
+                            </div>
+                            <div class="short-collection">{{ material.description }}</div>
+                            {% if 'author' in material %}
+                            <div class="author-collection"><a href="{% url 'view_profile' material.author.0.0 %}">{{ material.author.0.1 }}</a></div>
+                            {% endif %}
+                        </div>
+                        <div class="category-collection"><a href="{% url 'browse' %}?categories={{ material.categories.0.0 }}">
+                            {% if material.categories.0.1 %}
+                                {{ material.categories.0.1 }}
+                            {% else %}
+                                {% trans 'Other' %}
+                            {% endif %}
+                        </a></div>
+
+                    </div>
+                    <div class="collection-mainpage-other">
+                        {% if material.material_type == 1 %}
+                        <div class="voer-mol-ico left">&nbsp;</div>
+                        {% elif material.material_type == 2 %}
+                        <div class="voer-col-ico left">&nbsp;</div>
+                        {% endif %}
+
+                        <div class="hflike left">{% if material.favorite_count.favorite %} {{ material.favorite_count.favorite }}{% else %}0{% endif %}</div>
+                        <div class="hfview left">{% if material.view_count.view > 0 %}{{ material.view_count.view }}{% else %}0{% endif %}</div>
+                        <div class="hfother right tooltipi-container">
+                            <img src="{{ STATIC_URL }}images/icon/information.png">
+                            <div class="hftooltipi">
+                                Uploaded On: <strong>{{ material.modified }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endcomment %}
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 right-row">
+        <div class="hffilter-right">
+        <div id="fitertop-browserall fitertop-edit" class="hffitertop fitertop-edit">
+		    <div class="dropdown left">
+		        <a class="filter-title arrow-down" data-toggle="dropdown" href="#">{% trans 'Sort by' %}</a>
+		        <ul class="dropdown-menu-sort menu-new-update" role="menu" aria-labelledby="dLabel">
+		        	<li><a href="javascript:void(0)"  rel="modified">{% trans 'Ngày mới nhất' %}</a></li>
+                    <!-- <li><a href="javascript:void(0)" rel="-modified">{% trans 'Ngày z-a' %}</a></li> -->
+		            <li><a href="javascript:void(0)"  rel="title">{% trans 'Tiêu đề a-z' %}</a></li>
+                    <!--  <li><a href="javascript:void(0)" rel="-title">{% trans 'Tiêu đề z-a' %}</a></li> -->
+		            <!--<li><a>{% trans 'Relevance' %}</a></li>
+		            <li><a>{% trans 'Rating' %}</a></li>-->
+		            
+		        </ul>
+		    </div>
+		    <div class="fiterbutton right">
+		        {% comment %}
+		        <a class="gridview left">{% trans 'Gridview' %}</a>
+		        <a class="listview right">{% trans 'Listview' %}</a>
+		        {% endcomment %}
+		    </div>
+		</div>
+        <style type="text/css">
+            @media only screen and (max-width: 767px) {
+              .bigbox-common {
+                display: none;
+              }
+              .hffitertop .dropdown {
+				    width: 100%;
+				    padding: 0;
+				}
+				.menu-new-update {
+				    display: flex;
+				    width: 100%;
+				}
+				.menu-new-update li {
+
+				    width: 100%;
+				}
+				.material-list-entry {
+    				display: flex;
+    			}
+    			.material-brief h5 a {
+				    font-size: 13px;
+				}
+    			.material-brief p {
+				    color: #3e3e3e;
+				    font-size: 12px;
+				}
+				.footer .row {
+				    margin-right: 0px!important;
+				    display: flex;
+				}
+				.footer-message {
+					padding-left: 0;
+					padding-right: 0;
+				}
+            }
+        </style>
+        <div class="bigbox-common" style="">
+            <div class="title">{% trans 'Filter By' %}</div>
+            <div class="content" id="main_list">
+                <script>
+                    $(document).ready(function(){
+                        $('div[data-key|=authors]').click(function(){
+                            var $datakey=$(this).attr('data-key');
+                            if ($datakey == 'authors-0'){
+                                $('div[data-key|=authors]').removeClass('file_selected');
+                                $('div[data-key=authors-0]').addClass('file_selected');
+                            }else {
+                                if($('div[data-key|=authors]').hasClass('file_selected')){
+                                    $('div[data-key=authors-0]').removeClass('file_selected');
+                                }else{
+                                    $('div[data-key=authors-0]').addClass('file_selected');
+                                    ajaxGetMaterialByCondition();
+                                }
+                            }
+                        });
+                        $('div[data-key|=categories]').click(function(){
+                            var $datakey=$(this).attr('data-key');
+                            if($datakey == 'categories-0'){
+                                $('div[data-key|=categories]').removeClass('file_selected');
+                                $('div[data-key=categories-0]').addClass('file_selected');
+                            }else{
+                                if($('div[data-key|=categories]').hasClass('file_selected')){
+                                    $('div[data-key=categories-0]').removeClass('file_selected');
+                                }else{
+                                    $('div[data-key=categories-0]').addClass('file_selected');
+                                    ajaxGetMaterialByCondition();
+                                }
+                            }
+                        });
+                        $('div[data-key|=langs]').click(function(){
+                            var $datakey=$(this).attr('data-key');
+                            if($datakey == 'langs-0'){
+                                $('div[data-key|=langs]').removeClass('file_selected');
+                                $('div[data-key=langs-0]').addClass('file_selected');
+                            }else{
+                                if($('div[data-key|=langs]').hasClass('file_selected')){
+                                    $('div[data-key=langs-0]').removeClass('file_selected');
+                                }else{
+                                    $('div[data-key=langs-0]').addClass('file_selected');
+                                    ajaxGetMaterialByCondition();
+                                }
+                            }
+                        });
+                        $('div[data-key|=types]').click(function(){
+                            var $datakey=$(this).attr('data-key');
+                            if($datakey == 'types-0'){
+                                $('div[data-key|=types]').removeClass('file_selected');
+                                $('div[data-key=types-0]').addClass('file_selected');
+                            }else{
+                                if($('div[data-key|=types]').hasClass('file_selected')){
+                                    $('div[data-key=types-0]').removeClass('file_selected');
+                                }else{
+                                    $('div[data-key=types-0]').addClass('file_selected');
+                                    ajaxGetMaterialByCondition();
+                                }
+                            }
+                        });
+                        $('.checkbox-custom').click(function(){
+                            var $datakey=$(this).attr('data-key');
+                            $('div[data-key='+$datakey+']').toggleClass('file_selected');
+                            ajaxGetMaterialByCondition();
+                        });
+                    });
+                </script>
+                <!-- type -------------------------------------------------------------------->
+                <div class="smallbox-common">
+                    <div class="checkbox-item">
+                        <div class="file_selected" data-key="types-0">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom file_selected" data-key="types-0"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                {% trans 'All types' %}
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="checkbox-item">
+                        <div class="" data-key="types-1">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom" data-key="types-1"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                <a href="{% url "browse"  %}?types=1" title="{% trans 'Modules' %}">{% trans 'Modules' %}</a>
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="" data-key="types-2">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom" data-key="types-2"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                <a href="{% url "browse"  %}?types=2" title="{% trans 'Collection' %}">{% trans 'Collection' %}</a>
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- language -------------------------------------------------------------------->
+                <div class="smallbox-common">
+                    <div class="checkbox-item">
+                        <div class="file_selected" data-key="langs-0">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom file_selected" data-key="langs-0"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                {% trans 'All languages' %}
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="" data-key="langs-vi">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom" data-key="langs-vi"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                <a href="{% url "browse"  %}?languages=vi" title="{% trans 'Vietnamese' %}">{% trans 'Vietnamese' %}</a>
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="" data-key="langs-en">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom" data-key="langs-en"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                <a href="{% url "browse"  %}?languages=en" title="{% trans 'English' %}">{% trans 'English' %}</a>
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categories -->
+                <div class="smallbox-common">
+                    <div class="checkbox-item">
+                        <div class="file_selected" data-key="categories-0">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom file_selected" data-key="categories-0"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                {% trans 'All categories' %}
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                    {% for category in categories %}
+                    <div class="checkbox-item">
+                        <div class="" data-key="categories-{{category.id}}">
+                            <div class="grip_column">
+                                <div title="Select/Deselect Item" class="checkbox-custom" data-key="categories-{{category.id}}"></div>
+                            </div>
+                            <div class="hfcheckinfo">
+                                <a href="{% url "browse"  %}?categories={{ category.id }}" title="{% trans category.name %}">{% trans category.name %}</a>
+                            </div>
+                            <div class="hfchecknumber">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- input hidden extra -->
+                <input id="filter-author-id" type="hidden" value="" />
+                <input id="filter-sort" type="hidden" value="" />
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+  
+</div>
+
+<script type="text/javascript">$(function(){ Voer.Materials.run(); });</script>
+{% endblock %}

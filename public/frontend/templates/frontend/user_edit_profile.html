@@ -1,0 +1,169 @@
+{% extends "base/base-content.html" %}
+
+{% load i18n %}
+{% load thumbnail %}
+{% load vpw_filters %}
+
+{% block titleSite %}{% trans "User profile" %}{% endblock %}
+{% block js %}
+    {{ form.media }}
+    <script type="text/javascript" src="{{ STATIC_URL }}mce_filebrowser/js/filebrowser_init.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<!-- filter top -->
+<div class="hfuser-top">
+    <h1>{% trans 'My VOER' %}</h1>
+    {% include 'frontend/partials/author_info.html' %}
+</div>
+
+{% include 'frontend/block/left_block_user.html' %}
+
+<div class="col-lg-1 col-lg-1-custom right-row">
+    <div class="content edituser" style="padding:10px 20px;margin-bottom:20px;overflow:hidden;">
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li>{{ field.label }} - {{ error|escape }}</li>
+            {% endfor %}
+        {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if messages %}
+        <div class="alert alert-success">
+            <ul>
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <h1>{% trans 'Account Settings' %}</h1>
+        <form role="form" method="post" action="{% url 'edit_profile' %}" id="edit-user-profile-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="InputEmailAddress">{% trans 'E-mail address' %} <span class="red">*</span></label>
+                <input type="text" class="form-control typetext" id="InputEmailAddress" placeholder="{% trans 'Enter Emai Address' %}" value="{% if  author.email %}{{ author.email }}{% endif %}" name="email">
+                <p class="help-block">{% trans 'A valid e-mail address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.' %}</p>
+            </div>
+            <div class="form-group">
+                <label for="InputPassword">{% trans 'Password' %}</label>
+                <input type="password" class="form-control typetext" id="InputPassword" placeholder="{% trans 'Enter Your Password' %}" name="new_password">
+            </div>
+            <div class="form-group">
+                <label for="InputConfirmPassword">{% trans 'Confirm password' %}</label>
+                <input type="password" class="form-control typetext" id="InputConfirmPassword" placeholder="{% trans 'Enter Confirm Password' %}" name="confirm_password">
+                <p class="help-block">
+                    {% trans 'To make your password stronger:' %}
+                    <br>* {% trans 'Make it at least 6 characters' %}
+                    <br>* {% trans 'Add lowercase letters' %}
+                    <br>* {% trans 'Add uppercase letters' %}
+                    <br>* {% trans 'Add numbers' %}
+                    <br>* {% trans 'Add punctuation' %}
+                    <br>{% trans 'To change the current user password, enter the new password in both fields.' %}
+                </p>
+            </div>
+            <div class="form-group">
+                <label for="InputPicture">{% trans 'Picture' %}</label>
+                <input type="file" id="uploadfile_0" name="avatar_file">
+                <p class="help-block">{% trans 'Your virtual face or picture. Pictures larger than 1024x1024 pixels will be scaled down.' %}</p>
+
+                {% with avatar=author.id|get_author_avatar %}
+                {% if avatar %}
+                <a href="javascript:void(0)" class="hfbtn-common hfbtn-active btn-input-delete-avatar">{% trans 'Remove avatar' %}</a>
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            <div class="form-group">
+                <label for="InputFullname">{% trans 'Full name' %} <span class="red">*</span></label>
+                <input type="text" class="form-control typetext" id="InputFullname" placeholder="{% trans 'Enter fullname' %}" value="{% if author.fullname %}{{ author.fullname|safe }}{% endif %}" name="fullname">
+            </div>
+            <div class="form-group">
+                <label for="InputFirstname">{% trans 'First name' %}</label>
+                <input type="text" class="form-control typetext" id="InputFirstname" placeholder="{% trans 'Enter first name' %}" value="{% if author.first_name %}{{ author.first_name|safe }}{% endif %}" name="first_name">
+            </div>
+            <div class="form-group">
+                <label for="InputLastname">{% trans 'Last name' %}</label>
+                <input type="text" class="form-control typetext" id="InputLastname" placeholder="{% trans 'Enter last name' %}" value="{% if author.last_name %}{{ author.last_name|safe }}{% endif %}" name="last_name">
+            </div>
+            <div class="form-group">
+                <label for="InputTitle">{% trans 'Title' %}</label>
+                <input type="text" class="form-control typetext" id="InputTitle" placeholder="Enter Title" value="{% if author.title %}{{ author.title|safe }}{% endif %}" name="title">
+            </div>
+            <div class="form-group">
+                <label for="InputHomepage">{% trans 'Homepage' %}</label>
+                {{ form.homepage }}
+            </div>
+            <div class="form-group">
+                <label for="InputAffiliation">{% trans 'Affiliation' %}</label>
+                <input type="text" class="form-control typetext" id="InputAffiliation" placeholder="{% trans 'Enter affiliation' %}" value="{% if author.affiliation %}{{ author.affiliation|safe }}{% endif %}" name="affiliation">
+            </div>
+            <div class="form-group">
+                <label for="InputAffiliationURL">{% trans 'Affiliation URL' %}</label>
+                {{ form.affiliation_url }}
+            </div>
+            <div class="form-group">
+                <label for="InputBiography">{% trans 'Biography' %}</label>
+                {{ form.biography }}
+            </div>
+            <div class="form-group">
+                <label for="InputNationality">{% trans 'Nationality' %}</label>
+                <input type="text" class="form-control typetext" id="InputNationality" placeholder="{% trans 'Enter nationality' %}" value="{% if author.national %}{{ author.national|safe }}{% endif %}" name="national">
+            </div>
+            <div class="form-group">
+                <label for="InputCurrentPassword">{% trans 'Current password' %} <span class="red">*</span></label>
+                <input type="password" class="form-control typetext" id="InputCurrentPassword" placeholder="{% trans 'Enter Current Password' %}" name="current_password">
+                <p class="help-block">{% trans 'Enter your current password to change the E-mail address or Password. <a href="/user/password/reset/">Request new password</a>.' %}</p>
+            </div>
+            <div class="form-group btn-common">
+                <a class="hfbtn-common hfbtn-next right hfbtn-active btn-edit-profile" href="">{% trans 'Save' %}</a>
+                <a class="hfbtn-common hfbtn-back right hfbtn-active btn-edit-profile-reset" href="">{% trans 'Cancel' %}</a>
+            </div>
+        </form>
+    </div>
+ </div>
+
+<script>
+$(document).ready(function(){
+    $(document).on('click', '.btn-edit-profile', function(){
+        $('#edit-user-profile-form').submit();
+        return false;
+    });
+
+    $(document).on('click', '.btn-edit-profile-reset', function(){
+        $('#edit-user-profile-form')[0].reset();
+        return false;
+    });
+
+    $(document).on('click', '.btn-input-delete-avatar', function(){
+        var btn_delete_avatar = $(this);
+        if (confirm('{% trans 'Do you want to remove avatar?' %}')) {
+            $.ajax({
+                type: 'get',
+                url: '/ajax/remove-avatar',
+                success: function(data) {
+                    if (data.success === true) {
+                        $('.hfuser-avatar img').attr('src', '/static/images/author1_detail.jpg');
+                        $('#drop-top-language img').before('<span class="logo-user-right-top left"></span>').remove();
+                        btn_delete_avatar.hide();
+
+                        Voer.Helper.showMessagePopup(data.message);
+                    } else {
+                        console.log('Has something wrong');
+                    }
+                }
+            });
+        }
+        return false;
+    });
+});
+</script>
+{% endblock %}

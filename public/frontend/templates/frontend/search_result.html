@@ -1,0 +1,70 @@
+{% extends "base/base-content.html" %}
+
+{% load i18n %}
+{% load vpw_filters %}
+
+{% block titleSite %}{% trans "Search result" %}{% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- left content -->
+    <div class="col-lg-1 col-lg-1-custom left-row">
+        <!-- SEARCH RESULT BLOCK -->
+        <div class="hfitems gridview search-result">
+            <div id="materials" class="ajax-ev clearfix" data-ajax-trigger="load" data-ajax-url="/ajax/search-result?keyword={{ keyword }}">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-lg-2-custom right-row">
+        <div class="hffilter-right">
+            <div class="bigbox-common">
+                <div class="title">{% trans 'Filter By' %}</div>
+                <div class="content" id="main_list">
+                    <div class="smallbox-common search-type" data-key="search-type">
+                        <div class="checkbox-item">
+                            <div class="file_selected">
+                                <div class="grip_column">
+                                    <div title="{% trans 'Select/Deselect Item' %}" class="checkbox-custom file_selected" data-value=""></div>
+                                </div>
+                                <div class="hfcheckinfo">{% trans 'All' %}</div>
+                                <div class="hfchecknumber">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="checkbox-item">
+                            <div>
+                                <div class="grip_column">
+                                    <div title="{% trans 'Select/Deselect Item' %}" class="checkbox-custom" data-value="m"></div>
+                                </div>
+                                <div class="hfcheckinfo">
+                                    {% trans 'Material' %}
+                                </div>
+                                <div class="hfchecknumber">&nbsp;</div>
+                            </div>
+                        </div>
+                         <div class="checkbox-item">
+                            <div>
+                                <div class="grip_column">
+                                    <div title="{% trans 'Select/Deselect Item' %}" class="checkbox-custom" data-value="p"></div>
+                                </div>
+                                <div class="hfcheckinfo">
+                                    {% trans 'Author' %}
+                                </div>
+                                <div class="hfchecknumber">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- input hidden extra -->
+                    <input id="filter-search-type" type="hidden" value="" />
+                    <input type="hidden" id="search-keyword" value="{{ keyword }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">$(function(){ Voer.Search.run(); });</script>
+<script type="text/javascript">$(function(){ Voer.Materials.run(); });</script>
+<!-- END SEARCH RESULT BLOCK -->
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "base/base-content.html" %}
+
+{% load i18n %}
+{% load vpw_filters %}
+{% load thumbnail %}
+
+{% block titleSite %}{{ material.title }} - VOER{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        .collection-view-name {
+            width: 100%;
+        }
+        .module-view-category {
+            margin-right: 15px;
+        }
+        @media only screen and (max-width: 767px) {
+            .footer .row {
+                margin-right: 0px!important;
+                display: flex;
+            }
+            .footer-message {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .module-view-content iframe {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+<!-- LEFT ROW -->
+<div class="row">
+<div class="col-lg-9 left-row material-main">
+    <!-- TITLE MODULE -->
+    <div class="module-view-title left padding-content-15">
+        <div class="material-type">{% trans "Module" %}</div>
+        <h1 class="module-title left clear">{{ material.title }}</h1>
+        <a class="module-view-category left clear" title="{% trans category.name %}">{% trans category.name %}</a>
+        {% if material.id %}
+        {% if unpublished %}
+        <a href="{% url 'user_module_edit' mid=material.id %}" class="btn btn-primary" style="float: right;">{% trans 'Edit' %}</a>
+        <a href="{% url 'user_publish_material' mid=material.id %}" class="btn btn-primary" style="float: right; margin-right: 10px;">{% trans 'Publish' %}</a>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- END TITLE MODULE -->
+    <!-- CONTENT MODULE -->
+    <div class="module-view-content left padding-20">
+        {% if messages %}
+        <div class="alert alert-success">
+            <ul>
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="padding-bottom-10">
+            {% include 'frontend/partials/material_tools.html' %}
+        </div>
+
+        {{ material.text|safe }}
+        {% if origin_material %}
+            <div class="bs-callout bs-callout-info origin-information">
+                {% trans 'This document is derived from' %} <a href="{% url 'module_detail' title=origin_material.title|normalize_string mid=origin_material.material_id  %}">{{ origin_material.title }}</a>
+                {% if origin_authors %}
+                    {% trans "of" %}
+                    {% for origin_author in origin_authors %}
+                        {% if origin_author.fullname %}
+                            <a href="{% url "view_profile" origin_author.id %}">{{ origin_author.fullname }}</a>{% if not forloop.last %}, {% endif %}
+                        {% else %}
+                            <a href="{% url "view_profile" origin_author.id %}">{{ origin_author.user_id }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <!-- END CONTENT MODULE -->
+
+
+    {% if file_data %}
+    <!-- ATTACHMENT MODULE -->
+    <div class="attach-module-content attach-list left padding-content-15">
+        <h3>{% trans 'Attachments' %}</h3>
+        <div class="attach-content-comment">
+            <ul>
+                {% for attachment in file_data %}
+                <li>
+                    <a href="{% url 'get_attachment' attachment.attachment_id %}">{{ attachment.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!-- END ATTACHMENT MODULE -->
+    {% endif %}
+
+    <div class="bottom-module-content left padding-content-15 with-100">
+        {% include 'frontend/partials/material_tools.html' %}
+    </div>
+
+    <!-- COMMENT MODULE -->
+    <div class="comment-module-content left padding-content-15">
+        <div class="module-content-comment">
+            <ul>
+                <li>
+                    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-width="742" data-numposts="10" data-colorscheme="light"></div>
+                </li>
+            </ul>
+            <!-- <a class="btn-module-content-comment right">{% trans 'Comment' %}</a> -->
+        </div>
+    </div>
+    <!-- END COMMENT MODULE -->
+</div>
+<!-- END LEFT ROW -->
+<!-- RIGHT ROW -->
+<div id="material-right-side" class="col-lg-3 right-row material-info">
+    {% include 'frontend/partials/material_actions.html' %}
+    <!-- <div class="clearfix"></div> -->
+
+    {% if tag_data %}
+    <!-- TAG -->
+    <div class="module-block module-simple">
+        <div class="module-block-header">
+            <div class="icon-module"></div>
+            <div class="tilte-module">Tag</div>
+        </div>
+        <div class="module-block-content">
+            <a class="link-tag">Zen</a>
+            <a class="link-tag">Book</a>
+            <a class="link-tag">Khoa học</a>
+            <a class="link-tag">Bản đồ</a>
+            <a class="link-tag">Nghiên cứu</a>
+            <a class="link-tag">Phát triển</a>
+        </div>
+    </div>
+    <!-- END TAG -->
+    {% endif %}
+
+    {% include 'frontend/partials/material_author.html' %}
+
+    <div id="material-rating">
+    {% include 'frontend/partials/material_rate.html' with material=material %}
+    </div>
+
+    {% include 'frontend/partials/material_list.html' with links=material.links %}
+
+    <!-- OTHER FROM AUTHOR -->
+    <div id="by-same-author" class="module-block module-simple ">
+        <div class="title-box">{% trans 'By same author' %}</div>
+        <div class="padding-content-15">
+            <div id="module-others" class="ajax-ev" data-ajax-trigger="load" data-ajax-url="/ajax/get-others?authors={{ material.author }}">&nbsp;</div>
+        </div>
+    </div>
+    <!-- END OTHER FROM AUTHOR -->
+
+    <!-- SIMILAR ITEMS -->
+    <div id="similar-items" class="module-block module-simple">
+        <div class="title-box">{% trans 'Similar items' %}</div>
+        <div class="padding-content-15">
+            <div id="module-similars" class="ajax-ev" data-ajax-trigger="load" data-ajax-url="/ajax/get-similars?mid={{ material.material_id }}&version={{ material.version }}">&nbsp;</div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script type="text/javascript">
+$(function(){ Voer.Materials.run(); });
+
+$(document).ready(function(){
+    Voer.Helper.rating('.material-rating-average');
+
+    $(document).on('click', '.icon-delete-rate', function(){
+        Voer.Materials.materialRate(this);
+    });
+
+    $('#pdf-download').click(function(){
+       $('#more-download').toggle('slow');
+    });
+});
+</script>
+{% endblock %}
