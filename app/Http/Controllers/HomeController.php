@@ -8,6 +8,7 @@ use App\Models\VprContentMaterialPerson;
 use App\Models\VprContentPerson;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -112,5 +113,33 @@ class HomeController extends Controller
         Session::put('language', $lang);
         return redirect()->back();
     }
+
+    public function changePassword()
+        {
+        return view('user.change-password');
+        }
+
+        public function updatePassword(Request $request)
+{
+        # Validation
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+
+        #Match The Old Password
+        if(!Hash::check($request->old_password, auth('front')->user()->password)){
+            return back()->with("error", "Mật khẩu cũ chưa chính xác, vui lòng kiểm tra lại!");
+        }
+
+
+        #Update the new Password
+        VprContentPerson::whereId(auth('front')->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with("status", "Thay đổi mật khẩu thành công!");
+}
 
 }

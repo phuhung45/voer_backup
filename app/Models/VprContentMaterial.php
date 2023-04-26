@@ -24,7 +24,8 @@ class VprContentMaterial extends Model
         'language',
         'modified',
         'created_at',
-        'deleted'
+        'deleted',
+        'image'
     ];
 
     public function regex(){

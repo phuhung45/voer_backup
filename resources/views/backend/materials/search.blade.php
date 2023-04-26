@@ -33,18 +33,19 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 </head>
 <style>
-.button-doccument {
-    margin-left: auto;
-}
-
-a.btn {
-    margin-right: 10px;
-}
-
-td.test{
-    display: flex;
-}
-</style>
+    .button-doccument {
+        margin-left: auto;
+    }
+    
+    a.btn {
+        margin-right: 10px;
+        height: 40px;
+    }
+    
+    td.test{
+        display: flex;
+    }
+    </style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
@@ -140,7 +141,7 @@ td.test{
                                     </thead>
                                     <tbody>
                                         @foreach ($material as $item)
-                                            <tr>
+                                        <tr class="mode-material-delete-change-status-functionex-{{$item->id}}">
                                                 <td>
                                                     {{ $item->title }}
                                                 </td>
@@ -178,10 +179,10 @@ td.test{
                                                     'material_id' => $item->material_id])}}"
                                                         class="btn btn-success"><i class="fa-solid fa-eye"></i></a>
 
-                                                    <a href="{{ route('admin.destroy', $item->id) }}"
-                                                        onclick="return confirm('Bạn có chắc muốn xóa bản ghi?')"
-                                                        class="btn btn-danger btn-delete"><i class="fa-solid fa-recycle"></i></a>
-                                                </td>
+                                                        <p href="#" data-mode-name="material-delete" data-mode-id="{{ $item->id }}"  data-method="DELETE" class="btn-load-url-confirm btn btn-danger" data-href="{{ route('admin.destroy', $item->id) }}"
+                                                        
+                                                            class="btn btn-danger btn-delete"><i class="fa-solid fa-trash"></i></p>
+                                                    </td>
 
                                             </tr>
                                         @endforeach
@@ -212,25 +213,81 @@ td.test{
         <!-- /.control-sidebar -->
     </div>
     <script type="text/javascript">
-      $(document).ready(function() {
-
-          $('.btn-delete').on('click', function(e) {
-              e.preventDefault();
-              $.ajax({
-                  headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        $(document).ready(function() {
+  
+            $('.btn-delete').on('click', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: 'delete',
+                    url: $(this).attr('href'),
+                    success: function(response, textStatus, xhr) {
+                        alert(response)
+                        location.reload();
+                    }
+                });
+                
+            })
+            $('.btn-load-url-confirm').on('click', function(e){
+              const swalWithBootstrapButtons = Swal.mixin({
+                  customClass: {
+                      confirmButton: 'btn btn-success',
+                      cancelButton: 'btn btn-danger'
                   },
-                  type: 'delete',
-                  url: $(this).attr('href'),
-                  success: function(response, textStatus, xhr) {
-                      alert(response)
-                      location.reload();
+                  buttonsStyling: false
+                  })
+  
+                  swalWithBootstrapButtons.fire({
+                  title: 'Are you sure?',
+                  text: "You will be able to revert this!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: 'Yes, delete it!',
+                  cancelButtonText: 'No, cancel!',
+                  reverseButtons: true
+                  }).then((result) => {
+                  if (result.isConfirmed) {
+                      swalWithBootstrapButtons.fire(
+                      'Deleted!',
+                      'Your material has been deleted.',
+                      'success'
+                      );
+                      e.preventDefault();
+                      var url = $(this).attr('data-href');
+                      var method = $(this).attr('data-method');
+                      var data_mode_name = $(this).attr('data-mode-name');
+                      var data_mode_id = $(this).attr('data-mode-id');
+                      // console.log(url);
+                      $.ajax({
+                          headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                          type: method,
+                          url: url,
+                          success: function(response, textStatus, xhr) {
+                              //   alert(response)
+                              $('.mode-'+data_mode_name+'-change-status-functionex-'+data_mode_id).remove();
+                              console.log("zzzz");
+                              //   location.reload();
+                          }
+                      });
+                  } else if (
+                      /* Read more about handling dismissals below */
+                      result.dismiss === Swal.DismissReason.cancel
+                  ) {
+                      swalWithBootstrapButtons.fire(
+                      'Cancelled',
+                      'Your material is safe :)',
+                      'error'
+                      )
                   }
-              });
+                  })
               
-          })
-      });
-  </script>
+            });
+        });
+    </script>
   <!-- jQuery -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

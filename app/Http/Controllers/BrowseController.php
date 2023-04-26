@@ -16,17 +16,57 @@ class BrowseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $browses = new VprContentMaterial();
-        $browses = $browses->where('publish', '=', 1)->where('deleted', 0)->latest('modified')->paginate(12);
-        
+        try
+        {
+            $browses =  VprContentMaterial::query();
 
-        if (request()->wantsJson()) {
-            return VprContentMaterial::collection($browses);
+            if($request->all() == NULL){
+                $browses->where('publish', '=', true)->where('deleted', false)->latest('modified');
+            }
+            if($request->languages ==  "en" || $request->languages == "vi"){
+                $browses->where('language',$request->languages);
+            }
+            if(!empty($request->types)){
+                $browses->where('material_type',$request->types);
+            }
+            if(!empty($request->categories)){
+                
+                $categories = explode(',', $request->categories);
+                foreach($categories as $category){
+                    $browses->Where('categories', 'LIKE', "%$category%");
+                }
+            }
+            if($request->sort){
+                if($request->sort == 'title'){
+                    $browses->orderBy('title','asc');
+                    
+                }elseif($request->sort == '-title'){
+                    $browses->orderBy('title','desc');
+                }elseif($request->sort == 'modified'){
+                    $browses->orderBy('modified','desc');
+                }
+                elseif($request->sort == '-modified'){
+                    $browses->orderBy('modified','asc');
+                }
+            }
+
+            $browses = $browses->paginate(12);
+            if($request->ajax()){
+                return view('browse.part', compact('browses'));
+            }
+            if (request()->wantsJson()) {
+                return VprContentMaterial::collection($browses);
+            }
+
+            $data['browses'] = $browses;
+            return view('browse.index', $data);
         }
-        $data['browses'] = $browses;
-        return view('browse.index', $data);
+        catch(\Exception $e)
+        { 
+            dd($e);
+        }
     }
 
     /**
@@ -36,7 +76,18 @@ class BrowseController extends Controller
      */
     public function create()
     {
-        //
+        $author = DB::table('vpr_content_person')->where('id', auth('front')->user()->id)->select('id', 'fullname', 'user_id')->get();
+        $material = VprContentMaterialPerson::where('person_id', auth('front')->user()->id)
+        ->where('role', 1)
+        ->join('vpr_content_material', 'vpr_content_material.id', '=', 'vpr_content_materialperson.material_rid')
+        ->where('material_type',1)->get();
+        $data['author'] = $author;
+        $data['material'] = $material;
+        if($material->count() != 0){
+            return view('browse.collection_create', $data);
+            } else{
+                return redirect()->back()->withErrors(['message' => 'Hiện bạn chưa có tài liệu nào, vui lòng thêm tài liệu trước khi thêm giáo trình']);;
+            }
     }
 
     /**
@@ -47,6 +98,8 @@ class BrowseController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
+
         $request->validate(
             [
                 'text' => 'required',
@@ -67,7 +120,6 @@ class BrowseController extends Controller
                     $image_path = $request->file('image')->store('materials', 'public');
                 }
 
-                dd($request->all());
         $material = VprContentMaterial::create([
             'material_id' => Str::lower(Str::random(8)),
             'material_type' => $request->material_type,

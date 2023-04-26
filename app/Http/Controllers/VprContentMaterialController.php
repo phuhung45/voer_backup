@@ -24,11 +24,11 @@ class VprContentMaterialController extends Controller
         // dd($material_detail->author);
         
         if(!empty($material_detail)) {
+
             $material_id = $material_detail->id;
             $material_type = $material_detail->material_type;
             // *
             $person_id = $material_detail->author[0]->person_id;
-
             $count = DB::table('vpr_content_materialperson')
                 ->where('vpr_content_materialperson.person_id', $person_id)
                 ->where('vpr_content_materialperson.role', '=', 1)
@@ -42,6 +42,7 @@ class VprContentMaterialController extends Controller
                 
             $categories = [$material_detail->categories];
             $categories = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', $categories);
+            // dd($categories);
             // dd($categories);
             
             $int = (int)$categories[0];

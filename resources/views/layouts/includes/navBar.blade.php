@@ -1,16 +1,16 @@
-<link href="{{ asset('frontend/css/bootstrap.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/templates.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/slide.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/scrollbar.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/common.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/flat-ui.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/fonts/font.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/responsive.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/display-mathml.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/jquery/jRating/jRating.jquery.css') }}" rel="stylesheet">
-<link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/templates.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/slide.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/scrollbar.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/common.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/flat-ui.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/fonts/font.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/responsive.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/display-mathml.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/jquery/jRating/jRating.jquery.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
 
-<script type="text/javascript" src="/frontend/js/jquery.js"></script>
+    <script type="text/javascript" src="/frontend/js/jquery.js"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/bootstrap.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/bootstrap-select.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/flatui-checkbox.js') }}"></script>
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="{{ asset('/frontend/js/jquery.bootstrap-growl.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div id="top" class="navbar navbar-default navbar-fixed-top">
     <div class="donate" style="background-color: #404040; text-align:right;padding-right:10%" ><a href="https://vnfoundation.org/donate"><i class="fa fa-heart" aria-hidden="true"></i>Donate to VNFoundation</a></div>
     <div class="container main">
@@ -69,15 +69,33 @@
                 </li>
 
                 @if (!empty (auth('front')->user()))
-                    <li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Viết bài
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                     
+                                <p>
+                                    <a href="{{route('register.write', ['id' => auth('front')->user()->id])}}">{!! trans('lang.write') !!}</a>
+                                </p>
+                       
+                                <p>
+                                    <a href="{{route('browse.create')}}">{!! trans('lang.collection') !!}</a>
+                                </p>
+                       
+                        </div>
+                      </div>
+                </li>
+                    {{-- <li>
                         <a href="{{route('register.write', ['id' => auth('front')->user()->id])}}">{!! trans('lang.write') !!}</a>
                       
                     </li>
 
                     <li>
-                        <a href="{{route('collection.create')}}">{!! trans('lang.collection') !!}</a>
+                        <a href="{{route('browse.create')}}">{!! trans('lang.collection') !!}</a>
                       
-                    </li>
+                    </li> --}}
                 @endif
             </ul>
             <ul class="nav navbar-nav navbar-right list-right-top hidden-sm">
@@ -92,7 +110,7 @@
                     <li>
                         <div class="collapse navbar-collapse bs-js-navbar-collapse">
                                 
-                                <ul>
+                                <ul style="margin-top:-10px">
                                     @if (app()->getLocale() == 'en')
                                     <li>
                                         <form name="setLangVietnamese" action="{{ route('locale', ['locale' => 'vi']) }}" method="GET"><input type="hidden" name="csrfmiddlewaretoken" value="">
@@ -135,9 +153,12 @@
                                 </a>
 
                                 <a href="{{ route('register.write', ['id' => auth('front')->user()->id]) }}" class="dropdown-item">
-                                    <i class="fa-solid fa-pen" style="padding-right: 7px"></i> Viết bài
+                                    <i class="fa-solid fa-pen" style="padding-right: 7px"></i>Viết tài liệu
                                 </a>
-                                <br>
+                                <a href="{{route('browse.create')}}" class="dropdown-item">
+                                    <i class="fa-solid fa-pen" style="padding-right: 7px"></i>Viết giáo trình
+                                </a>
+                                {{-- <br> --}}
                                 <a href="{{ url('/user/logout') }}" class="dropdown-item">
                                     <i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 5px;"></i> Đăng xuất
                                 </a>

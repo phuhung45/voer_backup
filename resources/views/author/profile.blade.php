@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -19,13 +18,9 @@
 
 <meta name="description" content="Profile of Minh N. Do">
 
-
-
   <meta name="author" content="VOER">
 
     <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-    @include('layouts.includes.navBar')
-
 
     <link rel="shortcut icon" href="">
 
@@ -33,13 +28,12 @@
 
     <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
 
-
-
     <!-- Google Adsense -->
 
   </head>
 
   <body>
+    @include('layouts.includes.navBar')
 
 <!-- TOP -->
 
@@ -68,24 +62,22 @@
                 <div class="hfuser-avatar left">
 
                     @if (!empty($profile->avatar))
-                
                     <img src="/images/{{ $profile->avatar }}">
 
                     @else
-
                     <img src="/images/authors/author1.jpg">
 
                     @endif     
 
                 </div>
-@if ($profile->biography != NULL)
     
-                <div class="hfuser-name">{{ $profile->title . $profile->fullname }} </div>
+                <div class="hfuser-name">{{ $profile->title.' '.$profile->fullname }} </div>
 
                 
 
                 <div class="hfuser-address">
 
+                    @if ($profile->homepage != NULL)
 
                     {{ $profile->affiliation }} </div>
 
@@ -97,11 +89,11 @@
 
 
                 <div class="hfuser-homepage">{!! trans('lang.homepage') !!} <a href="{{ $profile->homepage }}" target="_blank">{{ $profile->homepage ??'' }}</a></div>
-
+                    @endif
 
                 <div class="hfuser-national">{!! trans('lang.national') !!} {{ $profile->national ??''}}</div>
-
-                
+                    @if ($profile->biography != NULL)
+                                        
                 <div class="hfuser-biography text-justify">{!! trans('lang.biography') !!} <p>{!! trans($profile->biography ??'') !!}</p></div>
    
                 @endif

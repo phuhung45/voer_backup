@@ -95,7 +95,7 @@
 
             <div class="card">
               <div class="card-header" style="background-color: #007bff;">
-                <h1 class="card-title" style="color: #fff">Thêm bài viết mới</h1>
+                <h1 class="card-title" style="color: #fff">Thêm giáo trình mới</h1>
               </div>
               @if ($errors->any())
                 <div class="alert alert-danger">
@@ -134,23 +134,22 @@
             </div>
   
           
-              <?php
-              $categories = DB::table('vpr_content_category')->select('id', 'name')->get()
-              ?>
-              <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-                  <div class="form-group">
-                    <label for="categories">Danh mục bài viết</label>
-                    <select id="myFilter" class="multiple_select" multiple name="categories[name][]">
-                      @foreach ($categories as $category)
-                      <option value="{{ $category->id }}">{{ $category->name }}</option>
-                      @endforeach
-                    </select>
-                          @error('categories')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                      @enderror
-                    </div>
+            <?php
+            $categories = DB::table('vpr_content_category')->select('id', 'name')->get()
+            ?>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js') }}"></script>
+                          <div class="form-group">
+                            <label for="categories">Danh mục bài viết</label>
+                            <br>
+                              @foreach ($categories as $category)
+                              <input type="checkbox" name="categories[name][]" value="{{ $category->id }}"> {{ $category->name }}
+                              @endforeach
+                                   @error('categories')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                        </div>
 {{--   
               <div class="form-group">
                 <label for="categories">Danh mục bài viết</label>
@@ -171,13 +170,6 @@
               </select>
           </div>
 
-            <div class="form-group">
-                <label for="material_type">Loại bài viết</label>
-                <select name="material_type" class="form-control @error('material_type') is-invalid @enderror" id="material_type">
-                    <option value="1" disabled style="background-color:#c0b9b9">Tài liệu</option>
-                    <option value="2">Giáo trình</option>
-                </select>
-            </div>
             <div class="form-group field_wrapper" id="navbar-search-input">
 
             <label for="text">Thông tin giáo trình</label>
@@ -205,7 +197,6 @@
                         onclick="handle(0)"
                         ><p style="margin-left: 25px; margin-top: -21px;">{{ $item->title }}</p>
                 @endforeach
-                
             </div>
             <button type="button" data-number="0" class="add_field">Thêm tài liệu</button>
                 <button class="btn btn-primary" type="submit">Thêm bài viết</button>

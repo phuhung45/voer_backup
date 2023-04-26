@@ -1,40 +1,28 @@
-@include('layouts.includes.navBar')
+@extends('layouts.includes.navBar')
 <!DOCTYPE html>
 <html lang="en">
   <head>
 
     <title>{{$detail->title}}</title>
 
-  <meta charset="utf-8">
-  <meta http-equiv="REFRESH" content="1800" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
-
-
-<meta name="description" content="Làm thế nào để bảo vệ một cách tốt nhất trước ô nhiễm không khí?
-Giảm mức tiếp xúc với ô nhiễm không khí tại Bishkek của bạn (giáo trình - tài liệu - học liệu từ VOER)">
-
-
-  <meta name="author" content="VOER">
+    <meta charset="utf-8">
+    <meta http-equiv="REFRESH" content="1800" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
+    <meta name="description" content="Làm thế nào để bảo vệ một cách tốt nhất trước ô nhiễm không khí?
+    Giảm mức tiếp xúc với ô nhiễm không khí tại Bishkek của bạn (giáo trình - tài liệu - học liệu từ VOER)">
+    <meta name="author" content="VOER">
     <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-
-
         <meta property="fb:app_id" content="757435387602275"/>
 
     <link rel="shortcut icon" href="">
 
-
-
   </head>
   <body>
-
-
-
 
 <!-- TOP -->
 
 <!-- END TOP -->
-
 
   	<div id="mainpage" class="main mainpage-content">
   		<div class="container voer-container">
@@ -69,7 +57,7 @@ Giảm mức tiếp xúc với ô nhiễm không khí tại Bishkek của bạn 
         <div class="collection-view-title left padding-content-15">
             <div class="material-type">{!! trans('lang.collect') !!}</div>
             <h1 class="collection-view-name left clear">{{$detail->title}}</h1>
-            <a class="module-view-category left clear" title="Business">{{ $name_categories }}</a>
+            <a class="module-view-category left clear" title="{{ $name_categories }}">{{ $name_categories }}</a>
 
             <h2 class="module-view-name sub-title left clear">{!! $data_content[0]->title !!}</h2>
             {{-- @dd($data_content[0]->title) --}}
@@ -332,17 +320,23 @@ Giảm mức tiếp xúc với ô nhiễm không khí tại Bishkek của bạn 
                     <li><a href="{{route('slug',['material_type' => 'm','slug' => Str::slug($same->title), 'material_id' => $same->material_id])}}">{{$same->title}}</a></li>
                 @endforeach
             </ul>
+            <div class="hfcontrol clear">
+                <div class="right">
+                    <a class="back ajax-ev" href="javascript:void(0)" data-ajax-url="/ajax/get-others?authors=702&amp;page=1" role="button" data-ajax-target="#module-others">Trước</a>
+                    <a class="next disabled" href="javascript:void(0)" data-ajax-url="" role="button">Tiếp</a>
+                 </div>
+            </div>
         </div>
     </div>
     <!-- END OTHER FROM AUTHOR -->
 
     <!-- SIMILAR ITEMS -->
-    <!--<div id="similar-items" class="module-block module-simple">
+    {{-- <div id="similar-items" class="module-block module-simple">
         <div class="title-box">Nội dung tương tự</div>
         <div class="padding-content-15">
             <div id="module-similars" class="ajax-ev" data-ajax-trigger="load" data-ajax-url="/ajax/get-similars?mid=570896b2&version=1">&nbsp;</div>
         </div>
-    </div>-->
+    </div> --}}
 
 </div>
 </div>

@@ -1,3 +1,4 @@
+@extends('layouts.includes.navBar')
   <!DOCTYPE html>
   <html lang="en">
 
@@ -6,7 +7,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Thêm bài viết mới</title>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
   </head>
 
   <body class="hold-transition sidebar-mini layout-fixed">
@@ -14,7 +14,6 @@
 
           <!-- Preloader -->
           <!-- Navbar -->
-          @include('layouts.includes.navBar')
           <!-- /.navbar -->
 
           <!-- Content Wrapper. Contains page content -->
@@ -35,10 +34,10 @@
                   <div class="card card-primary">
                       <!-- /.card -->
                       <div class="card">
-                          <div class="card-header">
+                          {{-- <div class="card-header">
                               <h1 class="card-title" style="padding-left: 2%; padding-top: 85px; ">Thêm Giáo trình mới
                               </h1>
-                          </div>
+                          </div> --}}
                           @if ($errors->any())
                               <div class="alert alert-danger">
                                   <ul>
@@ -123,25 +122,21 @@
                                       </div>
 
                                       <?php
-                                      $categories = DB::table('vpr_content_category')
-                                          ->select('id', 'name')
-                                          ->get();
+                                      $categories = DB::table('vpr_content_category')->select('id', 'name')->get()
                                       ?>
-                                      {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js') }}"></script> --}}
-                                      <div class="form-group">
-                                          <label for="categories">Danh mục bài viết</label>
-                                          <select id="myFilter" class="multiple_select" multiple
-                                              name="categories[name][]">
-                                              @foreach ($categories as $category)
-                                                  <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                              @endforeach
-                                          </select>
-                                          @error('categories')
-                                              <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                              </span>
-                                          @enderror
-                                      </div>
+                                      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js') }}"></script>
+                                                    <div class="form-group">
+                                                      <label for="categories">Danh mục bài viết</label>
+                                                      <br>
+                                                        @foreach ($categories as $category)
+                                                        <input type="checkbox" name="categories[name][]" value="{{ $category->id }}"> {{ $category->name }}
+                                                        @endforeach
+                                                             @error('categories')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                                  </div>
 
                                       <div class="form-group">
                                           <label for="author">Tác giả</label>
@@ -168,19 +163,6 @@
                                               </span>
                                           @enderror
                                       </div>
-
-                                      <div class="form-group">
-                                          <label for="material_type">Loại bài viết</label>
-                                          <select name="material_type"
-                                              class="form-control @error('material_type') is-invalid @enderror"
-                                              id="material_type">
-                                              <option value="1" disabled style="background-color:#c0b9b9">Tài
-                                                  liệu
-                                              </option>
-                                              <option value="2">Giáo trình</option>
-                                          </select>
-                                      </div>
-
 
                                       <button class="btn btn-primary" type="submit">Thêm giáo trình</button>
                                       <a href="{{ route('browse.index') }}"><button class="btn btn-danger btn-close"
@@ -281,33 +263,34 @@
         }
       </script>
 
-      <script>
-          $(".multiple_select").mousedown(function(e) {
-              if (e.target.tagName == "OPTION") {
-                  return; //don't close dropdown if i select option
-              }
-              $(this).toggleClass('multiple_select_active'); //close dropdown if click inside <select> box
-          });
-          $(".multiple_select").on('blur', function(e) {
-              $(this).removeClass('multiple_select_active'); //close dropdown if click outside <select>
-          });
-
-          $('.multiple_select option').mousedown(function(e) { //no ctrl to select multiple
-              e.preventDefault();
-              $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
-              $(this).parent().change(); //trigger change event
-          });
-
-
-          $("#myFilter").on('change', function() {
-              var selected = $("#myFilter").val().toString(); //here I get all options and convert to string
-              var document_style = document.documentElement.style;
-              if (selected !== "")
-                  document_style.setProperty('--text', "'Selected: " + selected + "'");
-              else
-                  document_style.setProperty('--text', "'Select values'");
-          });
-      </script>
+<script>
+    $(".multiple_select").mousedown(function(e) {
+      if (e.target.tagName == "OPTION") 
+      {
+        return; //don't close dropdown if i select option
+      }
+      $(this).toggleClass('multiple_select_active'); //close dropdown if click inside <select> box
+  });
+  $(".multiple_select").on('blur', function(e) {
+      $(this).removeClass('multiple_select_active'); //close dropdown if click outside <select>
+  });
+      
+  $('.multiple_select option').mousedown(function(e) { //no ctrl to select multiple
+      e.preventDefault(); 
+      $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+      $(this).parent().change(); //trigger change event
+  });
+  
+      
+      $("#myFilter").on('change', function() {
+        var selected = $("#myFilter").val().toString(); //here I get all options and convert to string
+        var document_style = document.documentElement.style;
+        if(selected !== "")
+          document_style.setProperty('--text', "'Selected: "+selected+"'");
+        else
+          document_style.setProperty('--text', "'Select values'");
+      });
+  </script>
       <script>
           $(document).on('click', '#btn-create', function() {
               var fieldsValues = [];

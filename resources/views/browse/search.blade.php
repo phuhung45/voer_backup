@@ -1,29 +1,15 @@
-@include('layouts.includes.navBar')
-{{-- <link href="frontend/css/bootstrap.css" rel="stylesheet">
-<link href="frontend/css/templates.css" rel="stylesheet">
-<link href="frontend/css/slide.css" rel="stylesheet">
-<link href="frontend/css/scrollbar.css" rel="stylesheet">
-<link href="frontend/css/common.css" rel="stylesheet">
-<link href="frontend/css/flat-ui.css" rel="stylesheet">
-<link href="frontend/fonts/font.css" rel="stylesheet">
-<link href="frontend/css/responsive.css" rel="stylesheet">
-<link href="frontend/css/display-mathml.css" rel="stylesheet">
-<link href="frontend/css/jquery/jRating/jRating.jquery.css" rel="stylesheet">
-<link href="frontend/css/style.css" rel="stylesheet">
+@extends('layouts.includes.navBar')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tìm kiếm tài liệu</title>
 
-<script type="text/javascript" src="/frontend/js/jquery.js"></script>
-	<script type="text/javascript" src="/frontend/js/bootstrap.js"></script>
-	<script type="text/javascript" src="/frontend/js/bootstrap-select.js"></script>
-	<script type="text/javascript" src="/frontend/js/flatui-checkbox.js"></script>
-	<script type="text/javascript" src="/frontend/js/common.js"></script>
-	<script type="text/javascript" src="/frontend/js/application.js"></script>
-	<script type="text/javascript" src="/frontend/js/display-mathml.js"></script>
-    <script type="text/javascript" src="/frontend/js/scrollbar.js"></script>
-    <script type="text/javascript" src="/frontend/js/jRating.jquery.min.js"></script>
-    <script type="text/javascript" src="/frontend/js/voer.js"></script>
-    <script type="text/javascript" src="/frontend/js/voer.materials.js"></script>
-    <script type="text/javascript" src="/frontend/js/voer.search.js"></script>
-    <script type="text/javascript" src="/frontend/js/jquery.bootstrap-growl.js"></script> --}}
+</head>
+<body>
+
 <div class="container" style="padding-top: 80px">
     <div class="row">
         <!-- left content -->
@@ -80,12 +66,6 @@
 
             <div class="hfitems active">
                 <div id="materials" class="material-list">
-
-
-
-
-
-
 
                     <script>
                         $(document).ready(function(){
@@ -177,13 +157,6 @@
                             <p>{{$item->description}}</p>
                             <div class="brief-published">
 
-
-
-
-
-
-
-
                                 <a href="javascript:void(0)" title="Lượt xem">
                                     <i class="icon icon-view"></i>
                                     <span class="stats-count">705</span>
@@ -226,7 +199,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 right-row">
+        {{-- <div class="col-lg-3 right-row">
             <div class="hffilter-right">
                 <div id="fitertop-browserall fitertop-edit" class="hffitertop fitertop-edit">
                     <div class="dropdown left">
@@ -284,8 +257,8 @@
                     
                 </style>
             </div>
-        </div>
-        @include('layouts.includes.rightBar')
+        </div> --}}
+        {{-- @include('layouts.includes.rightBar') --}}
     </div>
 
 </div>
@@ -306,3 +279,5 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 @include('layouts.includes.footer')
+</body>
+</html>

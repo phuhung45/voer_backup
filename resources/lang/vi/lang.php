@@ -52,7 +52,7 @@ return [
     'home_description' => 'Khám phá 22.268 tài liệu, 525 tuyển tập từ 13.483 tác giả',
     'read' => 'Đọc thêm',
     'details' => 'Xem chi tiết',
-    'write' => 'Viết bài',
+    'write' => 'Viết tài liệu',
     'collection' => 'Viết giáo trình'
 ];
 ?>

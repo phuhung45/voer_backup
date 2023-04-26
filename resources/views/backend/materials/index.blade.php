@@ -1,3 +1,10 @@
+@if (\Session::has('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li>{!! \Session::get('success') !!}</li>
+        </ul>
+    </div>
+@endif
 @extends('backend.layouts.sliderBar')
 @section('title', 'Danh sách bài viết')
 <!DOCTYPE html>
@@ -36,7 +43,10 @@
 .button-doccument {
     margin-left: auto;
 }
-
+.alert.alert-error {
+    color: red;
+    margin-left: 20%;
+}
 a.btn {
     margin-right: 10px;
     height: 40px;
@@ -112,7 +122,7 @@ td.test{
                         </div>
                         
                         <div class="button-doccument">
-                            <a href="{{ route('admin.create') }}" class="btn btn-primary">Thêm bài viết mới</a>
+                            <a href="{{ route('admin.create') }}" class="btn btn-primary">Thêm tài liệu mới</a>
                             <a href="{{ route('create-collection.create') }}" class="btn btn-primary">Thêm giáo trình mới</a>
                         </div>
 
@@ -218,6 +228,21 @@ td.test{
         </aside>
         <!-- /.control-sidebar -->
     </div>
+    <script>
+        (jQuery)(function($){
+            if('{{ $errors->any() }}'){
+                Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '{{$errors->first()}}',
+                showConfirmButton: false,
+                timer: 3500
+                })
+    
+            }
+        });
+    </script>
+
     <script type="text/javascript">
       $(document).ready(function() {
 

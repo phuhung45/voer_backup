@@ -1,3 +1,4 @@
+@extends('layouts.includes.navBar')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,6 @@
 
   <!-- Preloader -->
   <!-- Navbar -->
-@include('layouts.includes.navBar')
   <!-- /.navbar -->
 
   <style>
@@ -60,15 +60,14 @@ select#myFilter {
 {
 	display: block;
 }
-h1.card-title {
-    margin-left: 66px;
-}
+
 .multiple_select option::before {
   content: "\2610";
 }
 .multiple_select option:checked::before {
   content: "\2611";
 }
+
   </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -89,9 +88,9 @@ h1.card-title {
         <div class="card card-primary">
             <!-- /.card -->
             <div class="card">
-              <div class="card-header">
+              {{-- <div class="card-header">
                 <h1 class="card-title" style="padding-left: 2%; padding-top: 85px; ">Thêm bài viết mới</h1>
-              </div>
+              </div> --}}
               @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -108,7 +107,7 @@ h1.card-title {
     <div class="form-group">
       <label for="title">Tiêu đề</label>
       <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" id="last_name"
-          placeholder="nhập vào tiêu đề bài viết" value="{{ old('title') }}">
+          placeholder="Nhập vào tiêu đề bài viết" value="{{ old('title') }}">
       @error('title')
       <span class="invalid-feedback" role="alert">
           <strong>{{ $message }}</strong>
@@ -160,11 +159,10 @@ h1.card-title {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js') }}"></script>
                 <div class="form-group">
                   <label for="categories">Danh mục bài viết</label>
-                  <select id="myFilter" class="multiple_select" multiple name="categories[name][]">
+                  <br>
                     @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <input type="checkbox" name="categories[name][]" value="{{ $category->id }}"> {{ $category->name }}
                     @endforeach
-                  </select>
                          @error('categories')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -194,16 +192,7 @@ h1.card-title {
   @enderror
 </div>
 
-<div class="form-group">
-    <label for="material_type">Loại bài viết</label>
-    <select name="material_type" class="form-control @error('material_type') is-invalid @enderror" id="material_type">
-        <option value="1">Tài liệu</option>
-        <option value="2" disabled style="background-color:#c0b9b9">Giáo trình</option>
-    </select>
-</div>
-
-
-    <button class="btn btn-primary" type="submit">Thêm bài viết</button>
+    <button class="btn btn-primary" type="submit">Thêm tài liệu</button>
     <a href="{{ route('browse.index') }}"><button class="btn btn-danger btn-close" type="button">Hủy</button></a>
     <br>
     <br>

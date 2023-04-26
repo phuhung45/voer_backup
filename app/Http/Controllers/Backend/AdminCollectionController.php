@@ -36,7 +36,11 @@ class AdminCollectionController extends Controller
         ->where('material_type',1)->get();
         $data['author'] = $author;
         $data['material'] = $material;
+        if($material->count() != 0){
         return view('backend.materials.collection_create', $data);
+        } else{
+            return redirect()->back()->withErrors(['message' => 'Hiện bạn chưa có tài liệu nào, vui lòng thêm tài liệu trước khi thêm giáo trình']);
+        }
     }
 
     /**
@@ -67,7 +71,7 @@ class AdminCollectionController extends Controller
 
             $material = VprContentMaterial::create([
                 'material_id' => Str::lower(Str::random(8)),
-                'material_type' => 2,
+                'material_type' => '2',
                 'text' => json_encode($array),
                 'version' => '1',
                 'title' => $request->title,

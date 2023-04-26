@@ -112,16 +112,16 @@ class AuthController extends Controller
      */
     public function update(AuthorUserUpdateRequest $request, $id){
         $user_info = VprContentPerson::find($id);
-        $user_info->fullname = $request->fullname;
+        $user_info->fullname = $request->last_name .' '.$request->first_name;
         $user_info->email = $request->email;
         $user_info->last_name = $request->last_name;
         $user_info->first_name = $request->first_name;
         $user_info->homepage = $request->homepage;
-        if(!empty($request->password)){
-            $user_info->password = Hash::make($request['password']);
-        }else{
-            unset($user_info->password);
-        }
+        // if(!empty($request->password)){
+        //     $user_info->password = Hash::make($request['password']);
+        // }else{
+        //     unset($user_info->password);
+        // }
         $user_info->title = $request->title;
         $user_info->affiliation = $request->affiliation;
         $user_info->affiliation_url = $request->affiliation_url;

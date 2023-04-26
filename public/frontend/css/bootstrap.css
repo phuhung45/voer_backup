@@ -1423,7 +1423,7 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 90%;
   }
   .col-lg-1,
   .col-lg-2,
@@ -6588,9 +6588,9 @@ button.close {
   display: none !important;
 }
 
-.show {
+/* .show {
   display: block !important;
-}
+} */
 
 .invisible {
   visibility: hidden;

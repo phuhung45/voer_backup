@@ -25,7 +25,6 @@ class AuthorUserUpdateRequest extends FormRequest
     {
         return [
             'password' => 'nullable|min:8|string|confirmed',
-            'fullname' => 'required',
             'email' => 'nullable|email',
             'first_name' => 'nullable',
             'last_name' => 'nullable',

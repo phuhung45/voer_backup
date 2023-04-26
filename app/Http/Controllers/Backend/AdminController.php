@@ -87,14 +87,19 @@ class AdminController extends Controller
             ]
           );
 
-          $image_path = '';
-                if ($request->hasFile('image')) {
-                    $image_path = $request->file('image')->store('materials', 'public');
-                }
-
+        $image_path = '';
+          if ($request->hasFile('image')) {
+              // Delete old image
+  
+              // Store image -> store where ?
+              $image_path = $request->file('image')->store('materials', 'public');
+              // Save to Database
+              // $material->image = $image_path;
+          }
+        $author = DB::table('vpr_content_person')->where('user_id', auth()->user()->username)->select('id', 'fullname', 'user_id')->get();
         $material = VprContentMaterial::create([
             'material_id' => Str::lower(Str::random(8)),
-            'material_type' => $request->material_type,
+            'material_type' => '1',
             'text' => $request->text,
             'version' => '1',
             'title' => $request->title,
@@ -107,13 +112,14 @@ class AdminController extends Controller
             'modified' => Carbon::now(),
             'derived_from' => $request->derived_from,
             'image' => $image_path,
-            'author' => $request->author,
+            'author' => $author[0]->id,
 
         ]);
+
         if ($material) {
             $author = VprContentMaterialPerson::create([
                 'material_rid' => $material['id'],
-                'person_id' => $request->author,
+                'person_id' => $author[0]->id,
                 'role' => '1',
                 
             ]);
@@ -134,14 +140,13 @@ class AdminController extends Controller
      public function hide() {
         $materials = new VprContentMaterial();
         
-        $materials = $materials->where('publish', '=', 1)->latest('modified')->paginate(10);
+        // $materials = $materials->where('publish', '=', 1)->latest('modified')->paginate(10);
 
         $materials = DB::table('vpr_content_materialperson')
                     ->selectRaw('distinct material_rid, person_id, vpr_content_material.id, vpr_content_material.material_id, vpr_content_material.categories, vpr_content_material.title, vpr_content_person.fullname, vpr_content_material.modified, vpr_content_material.material_type, vpr_content_person.user_id')
                     ->join('vpr_content_material', 'vpr_content_material.id', '=', 'vpr_content_materialperson.material_rid')
                     ->join('vpr_content_person', 'vpr_content_person.id', '=', 'vpr_content_materialperson.person_id')
                     ->where('publish', '=', 0)
-                    ->where('deleted', 0)
                     ->latest('modified')
                     ->paginate(10);
                     $materials_try = new VprContentMaterial();
@@ -184,7 +189,7 @@ class AdminController extends Controller
         }
 
         $materials = new VprContentMaterial();
-        $materials = $materials::where('publish', '=', 1)->where('deleted', 0)->latest('modified')->paginate(10);
+        // $materials = $materials::where('publish', '=', 1)->where('deleted', 0)->latest('modified')->paginate(10);
 
         $materials = DB::table('vpr_content_materialperson')
                     ->selectRaw('distinct material_rid, person_id, vpr_content_material.id, vpr_content_material.material_id, vpr_content_material.categories, vpr_content_material.title, vpr_content_person.fullname, vpr_content_material.modified, vpr_content_material.material_type, vpr_content_person.user_id')

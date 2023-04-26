@@ -9,7 +9,7 @@ use App\Models\VprContentMaterial;
 use Carbon\Carbon;
 use App\Models\VprContentMaterialPerson;
 use App\Models\VprContentPerson;
-
+use Illuminate\Support\Facades\Storage;
 class UserMaterialController extends Controller
 {
     /**
@@ -51,14 +51,22 @@ class UserMaterialController extends Controller
                 ]
           );
 
+            // $image_path = '';
+            //     if ($request->hasFile('image')) {
+            //         $image_path = $request->file('image')->store('materials', 'public');
+            //     }
             $image_path = '';
-                if ($request->hasFile('image')) {
-                    $image_path = $request->file('image')->store('materials', 'public');
-                }
-
+            if ($request->hasFile('image')) {
+                // Delete old image
+    
+                // Store image -> store where ?
+                $image_path = $request->file('image')->store('materials', 'public');
+                // Save to Database
+                // $material->image = $image_path;
+            }
             $material = VprContentMaterial::create([
                 'material_id' => Str::lower(Str::random(8)),
-                'material_type' => $request->material_type,
+                'material_type' => '1',
                 'text' => $request->text,
                 'version' => '1',
                 'title' => $request->title,
@@ -72,8 +80,9 @@ class UserMaterialController extends Controller
                 'derived_from' => $request->derived_from,
                 'image' => $image_path,
                 'author' => auth('front')->user()->id,
-
             ]);
+
+        // dd($material);
             if ($material) {
                 $author = VprContentMaterialPerson::create([
                     'material_rid' => $material['id'],

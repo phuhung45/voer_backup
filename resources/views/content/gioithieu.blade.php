@@ -1,16 +1,11 @@
-@include('layouts.includes.navBar')
-
+@extends('layouts.includes.navBar')
 <!DOCTYPE html>
 
 <html lang="en">
 
   <head>
 
-
-
     <title>About Us</title>
-
-
 
   <meta charset="utf-8">
 
@@ -20,21 +15,9 @@
 
   <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
 
-  
-
-
-
-
-
   <meta name="author" content="VOER">
 
     <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-
-
-
-    
-
-
 
     <link rel="shortcut icon" href="">
 
@@ -46,15 +29,6 @@
 
   <body>
 
-    
-
-    
-
-
-
-
-
-
 
 <!-- TOP -->
 
@@ -62,20 +36,11 @@
 
 <!-- END TOP -->
 
-
-
-
-
 <!-- Modal -->
 
   	<div id="mainpage" class="main mainpage-content">
 
   		<div class="container voer-container">
-
-                  
-
-
-
 <div class="col-lg-2 col-lg-2-custom">
 
     <div class="hffilter-right">

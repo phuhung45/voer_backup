@@ -1,27 +1,4 @@
-@include('layouts.includes.navBar')
-
-<link href="../frontend/css/bootstrap.css" rel="stylesheet">
-
-<link href="../frontend/css/templates.css" rel="stylesheet">
-
-<link href="../frontend/css/slide.css" rel="stylesheet">
-
-<link href="../frontend/css/scrollbar.css" rel="stylesheet">
-
-<link href="../frontend/css/common.css" rel="stylesheet">
-
-<link href="../frontend/css/flat-ui.css" rel="stylesheet">
-
-<link href="../frontend/fonts/font.css" rel="stylesheet">
-
-<link href="../frontend/css/responsive.css" rel="stylesheet">
-
-<link href="../frontend/css/display-mathml.css" rel="stylesheet">
-
-<link href="../frontend/css/jquery/jRating/jRating.jquery.css" rel="stylesheet">
-
-<link href="../frontend/css/style.css" rel="stylesheet">
-
+@extends('layouts.includes.navBar')
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -46,7 +23,7 @@
 
   </head>
   <body>
-    
+
     
 
 

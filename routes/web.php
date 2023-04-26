@@ -90,6 +90,8 @@ Route::put('user/{id}', [AuthController::class, 'update'])->name('register.updat
 Route::get('user/register', [AuthController::class, 'create'])->name('register.create');
 Route::get('user_{id}/edit', [AuthController::class, 'edit'])->name('register.edit');
 Route::get('user-{id}/info', [AuthController::class, 'show'])->name('register.show');
+Route::get('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
+Route::post('/change-password', [HomeController::class, 'updatePassword'])->name('update-password');
 
 
 Route::POST('/user/login', [UserLoginController::class, 'index'])->name('user.login');

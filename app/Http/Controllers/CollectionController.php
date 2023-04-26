@@ -35,8 +35,12 @@ class CollectionController extends Controller
         ->where('material_type',1)->get();
         $data['author'] = $author;
         $data['material'] = $material;
-        return view('browse.collection_create', $data);
-    }
+        if($material->count() != 0){
+            return view('backend.materials.collection_create', $data);
+            } else{
+                return redirect()->back()->withErrors(['message' => 'Hiện bạn chưa có tài liệu nào, vui lòng thêm tài liệu trước khi thêm giáo trình']);;
+            }
+        }
 
     /**
      * Store a newly created resource in storage.

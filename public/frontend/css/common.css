@@ -420,6 +420,10 @@ right-row .hfitems {
 .hfuser-content {
 	overflow:hidden;
 	border-bottom:1px solid #E8E8E8;
+	display: grid !important;
+}
+.hfuser-information.left{
+	display: content;
 }
 .hfuser-info {
 	display:inline-block;
@@ -1219,9 +1223,9 @@ ul.successfull li.label {
 .menu-new-update{
 	/*margin-bottom: 8px;*/
 }
-.bigbox-common{
+/* .bigbox-common{
 	padding-top: 88px;
-}
+} */
 .menu-new-update li {
 	padding-bottom: 7px;
 }
