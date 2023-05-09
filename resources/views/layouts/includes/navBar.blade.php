@@ -1,4 +1,4 @@
-    <link href="{{ asset('frontend/css/bootstrap.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/templates.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/slide.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/scrollbar.css') }}" rel="stylesheet">
@@ -91,7 +91,6 @@
                         <a href="{{route('register.write', ['id' => auth('front')->user()->id])}}">{!! trans('lang.write') !!}</a>
                       
                     </li>
-
                     <li>
                         <a href="{{route('browse.create')}}">{!! trans('lang.collection') !!}</a>
                       
@@ -157,6 +156,10 @@
                                 </a>
                                 <a href="{{route('browse.create')}}" class="dropdown-item">
                                     <i class="fa-solid fa-pen" style="padding-right: 7px"></i>Viết giáo trình
+                                </a>
+                                <a href="{{ route('profile', ['id' => auth('front')->user()->id]) }}"
+                                    class="dropdown-item">
+                                    <i class="fa-solid fa-list" style="padding-right: 7px"></i>Tài liệu / giáo trình
                                 </a>
                                 {{-- <br> --}}
                                 <a href="{{ url('/user/logout') }}" class="dropdown-item">
@@ -246,7 +249,6 @@
             showConfirmButton: false,
             timer: 1500
             })
-
         }
     });
 </script>

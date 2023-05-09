@@ -10,7 +10,7 @@ function ajax_browse_page(url) {
 }
 
 function ajaxGetMaterialByCondition() {
-    var author_id = $("#filter-author-id").val();
+    var author_id = $("#author").val();
     var sort = $("#filter-sort").val();
     var page = 1;
 
@@ -43,10 +43,10 @@ function ajaxGetMaterialByCondition() {
         $("#selection-actions").addClass("displaynone");
     }
 
-    // $("#materials").html('<div class="bg-loading"><img src="/images/loading.gif" height="31" width="31" alt="loading..." /></div>');
-    // $.get('/browse' , {author: author_id, types: types.join(","), languages: langs.join(","), categories: categories.join(","), sort: sort}, function( data ) {
-    //     $("#materials" ).html(data);
-    // });
+    $("#materials").html('<div class="bg-loading"><img src="/images/loading.gif" height="31" width="31" alt="loading..." /></div>');
+    $.get('/browse' , {author: author_id, types: types.join(","), languages: langs.join(","), categories: categories.join(","), sort: sort}, function( data ) {
+        $("#materials" ).html(data);
+    });
     // handle url browser
 
     // window.location = url;

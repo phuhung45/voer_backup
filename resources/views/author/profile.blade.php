@@ -1,39 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
-  <head>
-
-    {{-- <title>{{ $profile->fullname }}</title> --}}
-
-  <meta charset="utf-8">
-
-  <meta http-equiv="REFRESH" content="1800" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
-
-  
-
-<meta name="description" content="Profile of Minh N. Do">
-
-  <meta name="author" content="VOER">
-
-    <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-
-    <link rel="shortcut icon" href="">
-
-    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
-
-    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
-
-    <!-- Google Adsense -->
-
-  </head>
-
-  <body>
-    @include('layouts.includes.navBar')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tác giả</title>
+</head>
+<style>
+    .footer {
+    width: 88% !important;
+    margin-left: 6%;
+    }
+</style>
+@include('layouts.includes.navBar')
 
 <!-- TOP -->
 
@@ -43,7 +22,6 @@
 
 <!-- Modal -->
 
-  	<div id="mainpage" class="main mainpage-content">
 
   		<div class="container voer-container">
 
@@ -355,7 +333,6 @@ $(document).ready(function(){
 
 
 
-@include('layouts.includes.footer')
 
 
 
@@ -370,7 +347,7 @@ $(document).ready(function(){
 
 
   		</div>
-
+@include('layouts.includes.footer')
   	</div>
 
 
@@ -390,8 +367,4 @@ $(document).ready(function(){
       ga('send', 'pageview');
 
     </script>
-
-  </body>
-
-</html>
 

@@ -1,32 +1,6 @@
-@extends('layouts.includes.navBar')
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-
-    <title>Đăng ký</title>
-
-  <meta charset="utf-8">
-  <meta http-equiv="REFRESH" content="1800" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
-  
-  <meta name="description" content="VOER là dự án của chương trình Tài nguyên Giáo dục Mở Việt Nam (hỗ trợ bởi Quỹ Việt Nam, The Vietnam Foundation - VNF). Đây là nguồn dữ liệu trung tâm cho các giáo sư, các cán bộ giảng dạy, sinh viên và những cá nhân tự học đại học ở Việt Nam.">
-  
-  <meta name="author" content="VOER">
-    <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-
-    
-
-    <link rel="shortcut icon" href="">
-    <link rel="shortcut icon" href="../static/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../static/images/favicon.ico" type="image/x-icon">
-
-  </head>
-  <body>
-
-    
-
-
+@extends('welcome')
+@section('title', 'Đăng ký tài khoản')
+@section('content')
 
 <!-- TOP -->
 <!-- END TOP -->
@@ -153,9 +127,6 @@ $(document).ready(function(){
 });
 </script>
 
-                
-  				    
-
 <!-- Modal -->
 <div class="modal fade" id="voer-message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -168,14 +139,9 @@ $(document).ready(function(){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-@include('layouts.includes.footer')
-
-
-
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-533acc7f382c20b0"></script>
-
-                
+             
   			</div>
   		</div>
   	</div>
@@ -190,5 +156,4 @@ $(document).ready(function(){
       ga('send', 'pageview');
 
     </script>
-  </body>
-</html>
+@endsection

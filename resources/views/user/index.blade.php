@@ -1,19 +1,8 @@
-@extends('layouts.includes.navBar')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Thông tin người dùng</title>
-</head>
-<style>
-    .btn-primary{
-        margin-left: 0px !important;
-    }
-</style>
-<body>
-<h2 style="margin-top: 150px">Thông tin người dùng</h2>
+@extends('welcome')
+@section('title', 'Thông tin người dùng')
+@section('content')
+<div class="user-show-info">
+    <h2 style="margin-top: 150px">Thông tin người dùng</h2>
 
 <table class="table table-striped table-valign-middle" style="margin-top: 20px; border:1px solid">
     <thead>
@@ -53,5 +42,5 @@
         </tr>
     </tbody>
 </table>
-</body>
-</html>
+</div>
+@endsection

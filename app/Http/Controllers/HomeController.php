@@ -105,7 +105,7 @@ class HomeController extends Controller
         '702',
         '1233',
         '1651'])->inRandomOrder()->limit(6)->get();
-        return view('welcome',['material_top' => $material_top, 'author_top' => $author_top, 'name_arr' => $name_arr, 'author' => $author]);
+        return view('frontend.index',['material_top' => $material_top, 'author_top' => $author_top, 'name_arr' => $name_arr, 'author' => $author]);
     }
 
     public function changeLang($locale){

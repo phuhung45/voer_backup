@@ -109,5 +109,5 @@ Route::get(
 
 Route::middleware('locale')->get('echo-lang', function () {
     echo __('lang.home');
-    return view('welcome');
+    return view('frontend.index');
 });

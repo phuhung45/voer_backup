@@ -1,25 +1,6 @@
-@extends('layouts.includes.navBar')
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-
-    <title>{{$detail->title}}</title>
-
-    <meta charset="utf-8">
-    <meta http-equiv="REFRESH" content="1800" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
-    <meta name="description" content="Làm thế nào để bảo vệ một cách tốt nhất trước ô nhiễm không khí?
-    Giảm mức tiếp xúc với ô nhiễm không khí tại Bishkek của bạn (giáo trình - tài liệu - học liệu từ VOER)">
-    <meta name="author" content="VOER">
-    <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-        <meta property="fb:app_id" content="757435387602275"/>
-
-    <link rel="shortcut icon" href="">
-
-  </head>
-  <body>
-
+@extends('welcome')
+@section('title', 'Tài liệu')
+@section('content')
 <!-- TOP -->
 
 <!-- END TOP -->
@@ -321,10 +302,7 @@
                 @endforeach
             </ul>
             <div class="hfcontrol clear">
-                <div class="right">
-                    <a class="back ajax-ev" href="javascript:void(0)" data-ajax-url="/ajax/get-others?authors=702&amp;page=1" role="button" data-ajax-target="#module-others">Trước</a>
-                    <a class="next disabled" href="javascript:void(0)" data-ajax-url="" role="button">Tiếp</a>
-                 </div>
+
             </div>
         </div>
     </div>
@@ -357,13 +335,9 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-  @include('layouts.includes.footer')
-
-
 <!-- END RIGHT ROW -->
 <div id="fb-root"></div>
 
   		</div>
   	</div>
-  </body>
-</html>
+@endsection

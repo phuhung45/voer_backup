@@ -1,15 +1,6 @@
-@extends('layouts.includes.navBar')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tìm kiếm tài liệu</title>
-
-</head>
-<body>
-
+@extends('welcome')
+@section('title', 'Tìm kiếm tài liệu')
+@section('content')
 <div class="container" style="padding-top: 80px">
     <div class="row">
         <!-- left content -->
@@ -278,6 +269,4 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-@include('layouts.includes.footer')
-</body>
-</html>
+@endsection

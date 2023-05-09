@@ -1,33 +1,6 @@
-@extends('layouts.includes.navBar')
-<!DOCTYPE html>
-
-<html lang="en">
-
-  <head>
-
-    <title>About Us</title>
-
-  <meta charset="utf-8">
-
-  <meta http-equiv="REFRESH" content="1800" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="globalsign-domain-verification" content="_gkUEDGpxtaNVaWl512gty1CJFvIrwBX2dguiH6mJr" />
-
-  <meta name="author" content="VOER">
-
-    <meta name="keywords" content="voer, ocw, vietnam oer, vietnam ocw, học liệu mở, tài nguyên, giáo dục mở, giáo trình, tài liệu, material, collection, module, "/>
-
-    <link rel="shortcut icon" href="">
-
-    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
-
-    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
-
-  </head>
-
-  <body>
+@extends('welcome')
+@section('title', 'Giới thiệu')
+@section('content')
 
 
 <!-- TOP -->
@@ -105,7 +78,6 @@
 
 
 
-@include('layouts.includes.footer')
 
 
 
@@ -119,7 +91,4 @@
   		</div>
 
   	</div>
-
-  </body>
-
-</html>
+@endsection

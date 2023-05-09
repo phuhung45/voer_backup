@@ -50,7 +50,7 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        // dd($request->content);
         $request->validate(
             [
             'title' => 'required',
@@ -59,6 +59,7 @@ class CollectionController extends Controller
             'title.required' => 'Không được để trống tiêu đề',
             ]
         );
+
         $array = array(
             "content" => $request->content,
         );
