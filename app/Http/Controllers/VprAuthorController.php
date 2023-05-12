@@ -27,7 +27,7 @@ class VprAuthorController extends Controller
             }
 
             $browses = new VprContentMaterial();
-            $browses = $browses->WhereIn('id', $array)->paginate(12);
+            $browses = $browses->WhereIn('id', $array)->latest('modified')->paginate(12);
                         
             if (request()->wantsJson()) {
                 return VprContentMaterial::collection($browses);

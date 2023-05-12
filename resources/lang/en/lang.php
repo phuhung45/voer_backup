@@ -69,6 +69,7 @@ return [
     'read' => 'Read more',
     'details' => 'View details',
     'write' => 'Write document',
-    'collection' => 'Curriculum'
+    'collection' => 'Curriculum',
+    'write' => 'Write',
 ];
 ?>

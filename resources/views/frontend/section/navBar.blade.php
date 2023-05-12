@@ -44,7 +44,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            Viết bài
+                            {!! trans('lang.write') !!}
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
 
@@ -83,7 +83,7 @@
                                     <input name="next" type="hidden" value="">
                                     <input type="hidden" name="language" value="vi">
                                     <a href="" onclick="document.setLangVietnamese.submit();return false;"><img
-                                            src="/images/vi.jpg" alt="Tiếng Việt" title="Tiếng Việt"></a>
+                                            src="/images/vi.jpg" alt="Tiếng Việt" class="language" title="Tiếng Việt"></a>
                                 </form>
                             </li>
                             @elseif(app()->getLocale() == 'vi')
@@ -94,7 +94,7 @@
                                     <input name="next" type="hidden" value="">
                                     <input type="hidden" name="language" value="en">
                                     <a href="" onclick="document.setLangEnglish.submit();return false;"><img
-                                            src="/images/us.png" alt="English" title="English"></a>
+                                            src="/images/us.png" alt="English" class="language" title="English"></a>
                                 </form>
                             </li>
                         </ul>

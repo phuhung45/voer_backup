@@ -318,12 +318,17 @@ div#top {
     background-color: rgb(193, 12, 62);
     border-color: #942241;
 }
+.left-row div.hfitems {
+	padding-top: 35px;
+}
 .support-link {
 	width: 80%;
 	text-align: center;
 	margin-left: 10%;
 }
 .support-main {
+	width: 120%;
+	margin-left:-10%;
     background-color: #e5e5e5;
 	margin-top: -60px;
 }
@@ -936,6 +941,9 @@ margin-bottom: -10px;
     padding-left: 35px;
     margin-bottom: 10px;
 }
+/* .list-module-name-content li.folder{
+	background: url(/static/images/bullet-w2.png?a875e3089f35) no-repeat scroll 0 6px rgba(0, 0, 0, 0);
+} */
 .list-module-name-content{
     height: 290px;
     overflow-x: auto;

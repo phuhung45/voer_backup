@@ -19,7 +19,7 @@
     <div class="container" style="padding-top: 80px">
         <div class="row">
             <!-- left content -->
-            <div class="col-lg-9 left-row">
+            <div class="col-lg-9 left-row material-index">
 
                 <!--như ở đây bác đứng để script như thế này nó rối lắm oki bác-->
                 <div class="hfitems active">

@@ -79,248 +79,248 @@ function ajaxGetMaterialByCondition() {
         });
     //ôi cái prettier
 }
-$(document).ready(function () {
-    $("#main_list").on("change", function ($e) {
-        ajaxGetMaterialByCondition();
-    });
-})(function ($, Voer, document) {
-    Voer.Helper = (function () {
-        return {
-            login: function () {
-                var formLogin = $("#login-form");
-                var url = formLogin.attr("action");
-                var messageObj = formLogin.find(".alert-modal-login");
-                messageObj.addClass("hidden");
+// $(document).ready(function () {
+//     $("#main_list").on("change", function ($e) {
+//         ajaxGetMaterialByCondition();
+//     });
+// })(function ($, Voer, document) {
+//     Voer.Helper = (function () {
+//         return {
+//             login: function () {
+//                 var formLogin = $("#login-form");
+//                 var url = formLogin.attr("action");
+//                 var messageObj = formLogin.find(".alert-modal-login");
+//                 messageObj.addClass("hidden");
 
-                $.post(url, formLogin.serialize(), function (data) {
-                    if (data.status == 1) {
-                        window.location.href = "/";
-                    } else {
-                        messageObj.children().html(data.message);
-                        messageObj.fadeIn("fast", function () {
-                            $(this).removeClass("hidden");
-                        });
-                    }
-                });
+//                 $.post(url, formLogin.serialize(), function (data) {
+//                     if (data.status == 1) {
+//                         window.location.href = "/";
+//                     } else {
+//                         messageObj.children().html(data.message);
+//                         messageObj.fadeIn("fast", function () {
+//                             $(this).removeClass("hidden");
+//                         });
+//                     }
+//                 });
 
-                return false;
-            },
-            showPassword: function (checkboxEle, passwordEle) {
-                if ($(checkboxEle).is(":checked")) {
-                    $(passwordEle).attr("type", "text");
-                } else {
-                    $(passwordEle).attr("type", "password");
-                }
-            },
-            getCookie: function (name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != "") {
-                    var cookies = document.cookie.split(";");
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
+//                 return false;
+//             },
+//             showPassword: function (checkboxEle, passwordEle) {
+//                 if ($(checkboxEle).is(":checked")) {
+//                     $(passwordEle).attr("type", "text");
+//                 } else {
+//                     $(passwordEle).attr("type", "password");
+//                 }
+//             },
+//             getCookie: function (name) {
+//                 var cookieValue = null;
+//                 if (document.cookie && document.cookie != "") {
+//                     var cookies = document.cookie.split(";");
+//                     for (var i = 0; i < cookies.length; i++) {
+//                         var cookie = jQuery.trim(cookies[i]);
+//                         // Does this cookie string begin with the name we want?
 
-                        if (
-                            cookie.substring(0, name.length + 1) ==
-                            name + "="
-                        ) {
-                            cookieValue = decodeURIComponent(
-                                cookie.substring(name.length + 1)
-                            );
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            },
-            ajaxCatcher: function () {
-                $('.ajax-ev[data-ajax-trigger="load"]').each(function () {
-                    var $this = $(this);
-                    var url = $this.attr("data-ajax-url");
-                    var target =
-                        $this.attr("data-ajax-target") ||
-                        "#" + $(this).attr("id");
-                    _run(url, target);
-                });
-                $(document).on(
-                    "click",
-                    '.ajax-ev[data-ajax-trigger!="load"]',
-                    function () {
-                        var $this = $(this);
-                        var url = $this.attr("data-ajax-url");
-                        var target =
-                            $this.attr("data-ajax-target") ||
-                            "#" + $(this).attr("id");
-                        _run(url, target);
-                    }
-                );
+//                         if (
+//                             cookie.substring(0, name.length + 1) ==
+//                             name + "="
+//                         ) {
+//                             cookieValue = decodeURIComponent(
+//                                 cookie.substring(name.length + 1)
+//                             );
+//                             break;
+//                         }
+//                     }
+//                 }
+//                 return cookieValue;
+//             },
+//             ajaxCatcher: function () {
+//                 $('.ajax-ev[data-ajax-trigger="load"]').each(function () {
+//                     var $this = $(this);
+//                     var url = $this.attr("data-ajax-url");
+//                     var target =
+//                         $this.attr("data-ajax-target") ||
+//                         "#" + $(this).attr("id");
+//                     _run(url, target);
+//                 });
+//                 $(document).on(
+//                     "click",
+//                     '.ajax-ev[data-ajax-trigger!="load"]',
+//                     function () {
+//                         var $this = $(this);
+//                         var url = $this.attr("data-ajax-url");
+//                         var target =
+//                             $this.attr("data-ajax-target") ||
+//                             "#" + $(this).attr("id");
+//                         _run(url, target);
+//                     }
+//                 );
 
-                function _run(url, target) {
-                    var $target = $(target);
-                    Voer.Helper.showLoadingState(target);
-                    $.ajax(url, {
-                        success: function (r) {
-                            Voer.Helper.removeLoadingState(target);
-                            $target.html(r);
-                        },
-                        error: function () {
-                            Voer.Helper.removeLoadingState(target);
-                        },
-                    });
-                }
-            },
-            showLoadingState: function (element) {
-                Voer.Helper.removeLoadingState(element);
+//                 function _run(url, target) {
+//                     var $target = $(target);
+//                     Voer.Helper.showLoadingState(target);
+//                     $.ajax(url, {
+//                         success: function (r) {
+//                             Voer.Helper.removeLoadingState(target);
+//                             $target.html(r);
+//                         },
+//                         error: function () {
+//                             Voer.Helper.removeLoadingState(target);
+//                         },
+//                     });
+//                 }
+//             },
+//             showLoadingState: function (element) {
+//                 Voer.Helper.removeLoadingState(element);
 
-                if (element === undefined) {
-                    element = "document";
-                    var coordinate = { top: 0, left: 0 };
-                    var loadingWidth = $(window).width() - 2;
-                    var loadingHeight = $(window).height() - 2;
-                } else {
-                    var coordinate = $(element).offset();
-                    var loadingWidth = $(element).width() - 2;
-                    var loadingHeight = $(element).height() - 2;
-                }
+//                 if (element === undefined) {
+//                     element = "document";
+//                     var coordinate = { top: 0, left: 0 };
+//                     var loadingWidth = $(window).width() - 2;
+//                     var loadingHeight = $(window).height() - 2;
+//                 } else {
+//                     var coordinate = $(element).offset();
+//                     var loadingWidth = $(element).width() - 2;
+//                     var loadingHeight = $(element).height() - 2;
+//                 }
 
-                if (loadingWidth == -2) {
-                    loadingWidth = 350;
-                }
+//                 if (loadingWidth == -2) {
+//                     loadingWidth = 350;
+//                 }
 
-                if (loadingHeight == -2) {
-                    loadingHeight = 32;
-                }
+//                 if (loadingHeight == -2) {
+//                     loadingHeight = 32;
+//                 }
 
-                var div = $(document.createElement("div"));
-                var elementId = element.substring(1);
+//                 var div = $(document.createElement("div"));
+//                 var elementId = element.substring(1);
 
-                div.attr("id", elementId + "-loading");
-                div.attr("class", "ajax-loading");
-                if (coordinate) {
-                    div.css({
-                        width: loadingWidth,
-                        height: loadingHeight,
-                        position: element == "document" ? "fixed" : "absolute",
-                        zIndex: element == "document" ? "2" : "40",
-                        top: coordinate.top + 1,
-                        left:
-                            element == "document"
-                                ? coordinate.left + 1
-                                : coordinate.left +
-                                  1 +
-                                  parseInt($(element).css("padding-left")),
-                    });
-                }
+//                 div.attr("id", elementId + "-loading");
+//                 div.attr("class", "ajax-loading");
+//                 if (coordinate) {
+//                     div.css({
+//                         width: loadingWidth,
+//                         height: loadingHeight,
+//                         position: element == "document" ? "fixed" : "absolute",
+//                         zIndex: element == "document" ? "2" : "40",
+//                         top: coordinate.top + 1,
+//                         left:
+//                             element == "document"
+//                                 ? coordinate.left + 1
+//                                 : coordinate.left +
+//                                   1 +
+//                                   parseInt($(element).css("padding-left")),
+//                     });
+//                 }
 
-                var loadingMargin = Math.round(loadingHeight / 2 - 16);
-                var content =
-                    '<div style="text-align:center;margin-top:' +
-                    loadingMargin +
-                    'px"><img src="/images/ajax-loader.gif" /></div>';
+//                 var loadingMargin = Math.round(loadingHeight / 2 - 16);
+//                 var content =
+//                     '<div style="text-align:center;margin-top:' +
+//                     loadingMargin +
+//                     'px"><img src="/images/ajax-loader.gif" /></div>';
 
-                div.html(content);
-                div.appendTo("body");
-            },
-            removeLoadingState: function (element) {
-                if (element === undefined) {
-                    element = "#document";
-                } else {
-                    element = "#" + element.substring(1);
-                }
+//                 div.html(content);
+//                 div.appendTo("body");
+//             },
+//             removeLoadingState: function (element) {
+//                 if (element === undefined) {
+//                     element = "#document";
+//                 } else {
+//                     element = "#" + element.substring(1);
+//                 }
 
-                $(element + "-loading").remove();
-            },
-            rating: function (element) {
-                var isDisabled = false;
+//                 $(element + "-loading").remove();
+//             },
+//             rating: function (element) {
+//                 var isDisabled = false;
 
-                if (Voer.Helper.hasAttr(element, "data-rated-flag")) {
-                    isDisabled = true;
-                }
+//                 if (Voer.Helper.hasAttr(element, "data-rated-flag")) {
+//                     isDisabled = true;
+//                 }
 
-                $(element).jRating({
-                    bigStarsPath: "/css/jquery/jRating/icons/stars.png",
-                    smallStarsPath: "/css/jquery/jRating/icons/small.png",
-                    rateMax: 5,
-                    isDisabled: isDisabled,
-                    sendRequest: false,
-                    step: true,
-                    onClick: function (obj, rate) {
-                        Voer.Materials.materialRate(obj, rate);
-                    },
-                });
-            },
-            hasAttr: function (element, field_name) {
-                var has_attr = false;
-                var attr = $(element).attr(field_name);
+//                 $(element).jRating({
+//                     bigStarsPath: "/css/jquery/jRating/icons/stars.png",
+//                     smallStarsPath: "/css/jquery/jRating/icons/small.png",
+//                     rateMax: 5,
+//                     isDisabled: isDisabled,
+//                     sendRequest: false,
+//                     step: true,
+//                     onClick: function (obj, rate) {
+//                         Voer.Materials.materialRate(obj, rate);
+//                     },
+//                 });
+//             },
+//             hasAttr: function (element, field_name) {
+//                 var has_attr = false;
+//                 var attr = $(element).attr(field_name);
 
-                // For some browsers, `attr` is undefined; for others, `attr` is false.  Check for both.
-                if (typeof attr !== "undefined" && attr !== false) {
-                    has_attr = true;
-                }
+//                 // For some browsers, `attr` is undefined; for others, `attr` is false.  Check for both.
+//                 if (typeof attr !== "undefined" && attr !== false) {
+//                     has_attr = true;
+//                 }
 
-                return has_attr;
-            },
-            createCookie: function (name, value, days) {
-                var expires = "";
+//                 return has_attr;
+//             },
+//             createCookie: function (name, value, days) {
+//                 var expires = "";
 
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-                    expires = "; expires=" + date.toGMTString();
-                }
+//                 if (days) {
+//                     var date = new Date();
+//                     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+//                     expires = "; expires=" + date.toGMTString();
+//                 }
 
-                document.cookie = name + "=" + value + expires + "; path=/";
-            },
-            readCookie: function (name) {
-                var nameEQ = name + "=";
-                var ca = document.cookie.split(";");
+//                 document.cookie = name + "=" + value + expires + "; path=/";
+//             },
+//             readCookie: function (name) {
+//                 var nameEQ = name + "=";
+//                 var ca = document.cookie.split(";");
 
-                for (var i = 0; i < ca.length; i++) {
-                    var c = ca[i];
-                    while (c.charAt(0) == " ") c = c.substring(1, c.length);
-                    if (c.indexOf(nameEQ) == 0)
-                        return c.substring(nameEQ.length, c.length);
-                }
+//                 for (var i = 0; i < ca.length; i++) {
+//                     var c = ca[i];
+//                     while (c.charAt(0) == " ") c = c.substring(1, c.length);
+//                     if (c.indexOf(nameEQ) == 0)
+//                         return c.substring(nameEQ.length, c.length);
+//                 }
 
-                return null;
-            },
-            eraseCookie: function (name) {
-                this.createCookie(name, "", -1);
-            },
-            showMessagePopup: function (message, params) {
-                var setting_default = {
-                    ele: "body", // which element to append to
-                    type: "success", // (null, 'info', 'danger', 'success')
-                    offset: { from: "top", amount: 70 }, // 'top', or 'bottom'
-                    align: "center", // ('left', 'right', or 'center')
-                    width: "auto", // (integer, or 'auto')
-                    delay: 3000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
-                };
+//                 return null;
+//             },
+//             eraseCookie: function (name) {
+//                 this.createCookie(name, "", -1);
+//             },
+//             showMessagePopup: function (message, params) {
+//                 var setting_default = {
+//                     ele: "body", // which element to append to
+//                     type: "success", // (null, 'info', 'danger', 'success')
+//                     offset: { from: "top", amount: 70 }, // 'top', or 'bottom'
+//                     align: "center", // ('left', 'right', or 'center')
+//                     width: "auto", // (integer, or 'auto')
+//                     delay: 3000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
+//                 };
 
-                var settings = $.extend({}, setting_default, params);
+//                 var settings = $.extend({}, setting_default, params);
 
-                $(".bootstrap-growl").remove();
-                $.bootstrapGrowl(message, settings);
-            },
-        };
-    })();
-})(jQuery, window.Voer, window.document);
+//                 $(".bootstrap-growl").remove();
+//                 $.bootstrapGrowl(message, settings);
+//             },
+//         };
+//     })();
+// })(jQuery, window.Voer, window.document);
 
-jQuery(function ($) {
-    Voer.Helper.ajaxCatcher();
+// jQuery(function ($) {
+//     Voer.Helper.ajaxCatcher();
 
-    $(document).on("click", ".fiterbutton .gridview", function () {
-        $(".hfitems").toggleClass("gridview");
-        $(".gridview").toggleClass("active");
-        $(".listview").toggleClass("active");
-    });
+//     $(document).on("click", ".fiterbutton .gridview", function () {
+//         $(".hfitems").toggleClass("gridview");
+//         $(".gridview").toggleClass("active");
+//         $(".listview").toggleClass("active");
+//     });
 
-    $(document).on("click", ".fiterbutton .listview", function () {
-        $(".hfitems").toggleClass("gridview");
-        $(".gridview").toggleClass("active");
-        $(".listview").toggleClass("active");
-    });
-});
+//     $(document).on("click", ".fiterbutton .listview", function () {
+//         $(".hfitems").toggleClass("gridview");
+//         $(".gridview").toggleClass("active");
+//         $(".listview").toggleClass("active");
+//     });
+// });
 $(document).ready(function () {
     var currentURL = document.URL;
     $("ul#outline-collection li > ul").hide();

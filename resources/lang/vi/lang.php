@@ -53,6 +53,7 @@ return [
     'read' => 'Đọc thêm',
     'details' => 'Xem chi tiết',
     'write' => 'Viết tài liệu',
-    'collection' => 'Viết giáo trình'
+    'collection' => 'Viết giáo trình',
+    'write' => 'Viết bài',
 ];
 ?>

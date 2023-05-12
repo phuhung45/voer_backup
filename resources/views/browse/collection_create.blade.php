@@ -1,11 +1,12 @@
 @extends('welcome')
+@section('title', 'Viết giáo trình')
 @section('style')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 @section('content')
 <!-- Main content -->
 <style>
-    .input_authors{
+    .input_authors {
         display: none;
     }
 </style>
@@ -60,34 +61,15 @@
                             <label for="text">Thông tin giáo trình</label>
                             <br>
                             <div class="input-group">
-                                <input type="hidden" class="input_lisence" name="content[0][lisence]"
-                                    value="http://creativecommons.org/licenses/by/3.0/">
-                                <input type="hidden" id="input_title" class="input_title" name="content[0][title]"
-                                    value="">
-                                <input type="hidden" class="input_url" name="content[0][url]"
-                                    value="http://www.voer.edu.vn/m/">
-                                <input type="hidden" class="input_version" name="content[0][version]" value="1">
-                                <input type="hidden" class="input_authors" name="content[0][authors][]"
-                                    value="{{ $author[0]->fullname }}" placeholder="Your author">
-                                <input type="text" id="input_author" class="input_authors" name="content[0][authors]"
-                                    value="{{ $author[0]->fullname }}" placeholder="Your author" disabled>
-
-                                <input type="hidden" class="input_type" name="content[0][type]" value="module"
-                                    placeholder="Your id">
-                                <br>
-                                <select id="select-state-0" class="form-select select-state" name="content[0][id]">
+                                <select id="select-state" class="form-select select-state" name="id[]"
+                                    multiple>
                                     @foreach ($material as $item)
-                                    <option class="input_material_id" name="content[0][id]"
-                                        value="{{ $item->material_id }}" class="input_material_id" name="content[0][id]"
-                                        value="{{ $item->material_id }}" onclick="handle(0)">{{ $item->title }}</option>
+                                    <option class="input_material_id" name="id[]"
+                                        value="{{ $item->material_id }}">{{ $item->title }}</option>
                                     @endforeach
                                 </select>
-                                {{-- <input type="radio" class="input_material_id" name="content[0][id]"
-                                    value="{{ $item->material_id }}" placeholder="Your id" onclick="handle(0)">
-                                <p style="margin-left: 25px; margin-top: -21px;">{{ $item->title }}</p> --}}
                             </div>
 
-                            <button type="button" data-number="0" class="add_field">Thêm tài liệu</button>
                             <div class="form-group">
                                 <label for="image">Hình ảnh</label>
                                 <div class="custom-file">
@@ -173,79 +155,28 @@
             $(el).select2();
         }
     }
-    initSelect2();
-//     $("#select-state-0").select2({
-//   maximumSelectionLength: 30
-// });
-    $(document).on('click', '.add_field', function() {
-            const number = Number($(this).data('number')) + 1
-            const html = `
-            <hr style="height: 2px; background:black; margin-bottom:-40px;">
-            <br>
-            <div class="input-group">
-                <input type="hidden" class="input_lisence" name="content[` + number + `][lisence]"
-                    value="http://creativecommons.org/licenses/by/3.0/">
-                    
-                <input type="hidden" id="input_title" class="input_title" name="content[` + number + `][title]"
-                    value="">
-                <input type="hidden" class="input_url" name="content[` + number + `][url]"
-                    value="http://www.voer.edu.vn/m/">
-                <input type="hidden" class="input_version" name="content[` + number + `][version]"
-                    value="1">
-                <input type="hidden" class="input_authors" name="content[` + number + `][authors][]"
-                    value="{{ $author[0]->fullname }}" placeholder="Your author">
-                <input type="text" class="input_authors" name="content[` + number + `][authors]"
-                    value="{{ $author[0]->fullname }}" placeholder="Your author" disabled>
-                <input type="hidden" class="input_type" name="content[` + number + `][type]"
-                    value="module" placeholder="Your id">
-                    <br>
-                    <br>
-                    <select id="select-state-${number}" class="form-select select-state" name="content[` + number + `][id]">
-                                    @foreach ($material as $item)
-        
-                            <option class="input_material_id" name="content[` + number + `][id]"
-                            value="{{ $item->material_id }}"
-                            onclick="handle(
-                            ` +
-                            number +
-                            `)"
-                        >{{ $item->title }}</option>
-                                    @endforeach
-                                    </select>
-                </div>
-            `;
-            $(html).insertAfter('.input-group:last');
-            $(this).data('number', number);
-            initSelect2();
-            handleSelect.listener(`#select-state-${number}`)
-        })
-        let handleSelect = function(){
-            let listener = function(el){
-                $(el).on('change',function(e) {
-                    init(this);
-                })
-            }
-            let init = function(e){
-                const _this = $(e);
-                let value = _this.find(':selected').text();
-                $(_this.closest('div.input-group')).find('input.input_title').val(value);
-            }
+    var $example = $(".select-state").select2();
+    var $exampleMulti = $(".select-state-multi").select2();
 
-            return {
-                init: (el) => {
-                    init(el);
-                },
-                listener: (el) => {
-                    listener(el);
-                },
-                firstInit: (el) => {
-                    init(el);
-                    listener(el);
-                }
-            }
-        }()
-        // init
-        handleSelect.firstInit(`#select-state-0`);
+    $(".js-programmatic-set-val").on("click", function () {
+        $example.val("CA").trigger("change");
+    });
+
+    $(".js-programmatic-open").on("click", function () {
+        $example.select2("open");
+    });
+
+    $(".js-programmatic-close").on("click", function () {
+        $example.select2("close");
+    });
+
+    $(".js-programmatic-init").on("click", function () {
+        $example.select2();
+    });
+
+    $(".js-programmatic-destroy").on("click", function () {
+        $example.select2("destroy");
+    });
 </script>
 
 <script>

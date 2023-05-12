@@ -114,7 +114,7 @@
     <script type="text/javascript" src="{{ asset('/frontend/js/common.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/frontend/js/application.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/frontend/js/display-mathml.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/frontend/js/scrollbar.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('/frontend/js/scrollbar.js') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('/frontend/js/jRating.jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/frontend/js/voer.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/frontend/js/voer.materials.js') }}"></script>

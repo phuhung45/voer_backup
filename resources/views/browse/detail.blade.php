@@ -1,5 +1,5 @@
 @extends('welcome')
-@section('title', 'Tài liệu')
+@section('title', $detail->title)
 @section('content')
 <!-- TOP -->
 
@@ -15,6 +15,21 @@
         .module-view-category {
             margin-right: 15px;
         }
+        ul>li>ul {
+            display: none;
+        }
+        li.nav-item.dropdown {
+            margin-top: 15px;
+        }
+        li#input-search-right-top {
+            margin-top: 2px;
+        }
+        img.language {
+            margin-top: 20px;
+        }
+        button.btn.btn-secondary.dropdown-toggle {
+            margin-top: 8px;
+        }
         @media only screen and (max-width: 767px) {
             .footer .row {
                 margin-right: 0px!important;
@@ -28,6 +43,7 @@
                 width: 100% !important;
                 height: auto !important;
             }
+            
         }
     </style>
 <!-- LEFT ROW -->
@@ -240,9 +256,10 @@
 					<ul id='outline-collection' class='list-module-name-content'>
                     @foreach($list_arr->content as $itemc1)
                     @if (!isset($itemc1->content))
+                    
                     <li><a href="{{route('slug',['material_type' => 'c','slug' => Str::slug($itemc1->title), 'material_id' => $detail->material_id, 'content_id' => $itemc1->id])}}">{{$itemc1->title}}</a></li>
                     @else
-                        <li><a href="">{{$itemc1->title}}</a>
+                        <li id="folder-open"><a href="">{{$itemc1->title}}</a>
 							@if(isset($itemc1->content))
 								<ul>
                                     
@@ -341,3 +358,13 @@
   		</div>
   	</div>
 @endsection
+
+<script>
+    $('#folder-open').click(function(e){
+    e.stopPropagation();
+    if(this.getElementsByTagName("ul")[0].style.display =="block")
+        $(this).find("ul").slideUp();
+    else
+        $(this).children(":first").slideDown();
+});
+</script>

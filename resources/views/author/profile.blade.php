@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tác giả</title>
+    <title>Thông tin tác giả</title>
 </head>
 <style>
     .footer {
@@ -115,7 +115,7 @@
 
         <div class="hfitems active">
 
-            <div id="materials" class="material-list">
+            <div id="materials-author" class="material-list">
 
 
 <script>
@@ -230,7 +230,7 @@ $(document).ready(function(){
 
                             <h5 class="module-title">
 
-                                <a title="Tài liệu: Bài toán các vị tướng Byzantine và ứng dụng trong Blockchain" alt="Tài liệu: Bài toán các vị tướng Byzantine và ứng dụng trong Blockchain" href="{{route('slug',['material_type' => $browse->material_type,'slug' => $browse->slug(), 'material_id' => $browse->material_id])}}"> {{$browse->title}} </a>
+                                <a title="Tài liệu: {{ $browse->title }}" alt="Tài liệu: {{ $browse->title }}" href="{{route('slug',['material_type' => $browse->material_type,'slug' => $browse->slug(), 'material_id' => $browse->material_id])}}"> {{$browse->title}} </a>
 
                             </h5>
 

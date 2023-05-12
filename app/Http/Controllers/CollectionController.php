@@ -50,7 +50,7 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->content);
+        // dump($request->all());
         $request->validate(
             [
             'title' => 'required',
@@ -59,10 +59,21 @@ class CollectionController extends Controller
             'title.required' => 'Không được để trống tiêu đề',
             ]
         );
-
+        foreach($request->id as $item){
+            $title = VprContentMaterial::where('material_id', $item)->first();
+        $content[] = [
+            'license' => 'http://creativecommons.org/licenses/by/3.0/',
+            'title' => $title->title,
+            'url' => 'http://www.voer.edu.vn/m/'.str_slug($title->title , "-").'/'.$item,
+            'version' => '1',
+            'authors' => [auth('front')->user()->fullname],
+            'type' => 'module',
+            'id' => $item,
+        ];
         $array = array(
-            "content" => $request->content,
+            "content" => $content,
         );
+    }
         // dd($array);
         $image_path = '';
                 if ($request->hasFile('image')) {

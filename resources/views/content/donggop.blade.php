@@ -14,6 +14,9 @@
 li.nav-item.dropdown {
     margin-top: 50%;
 }
+button.btn.btn-secondary.dropdown-toggle{
+      margin-top: 8px !important;
+}
 </style>
   	<div id="mainpage" class="main mainpage-content">
 
