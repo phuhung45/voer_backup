@@ -8,9 +8,10 @@ function ajax_browse_page(url) {
         Voer.Helper.removeLoadingState(target);
     });
 }
-
 function ajaxGetMaterialByCondition() {
-    var author_id = $("#author").val();
+    var author_id = $("#filter-author-id").length
+        ? $("#filter-author-id").val()
+        : "";
     var sort = $("#filter-sort").val();
     var page = 1;
 
@@ -27,28 +28,52 @@ function ajaxGetMaterialByCondition() {
     var langs = [];
     var categories = [];
     for (var i = 0; i < numberItem; i++) {
-        if (listItems[i].substr(0, 6) == "types-") {
-            types.push(listItems[i].substr(6));
-        } else if (listItems[i].substr(0, 6) == "langs-") {
-            langs.push(listItems[i].substr(6));
-        } else if (listItems[i].substr(0, 11) == "categories-") {
-            categories.push(listItems[i].substr(11));
+        if (listItems[i].includes("types")) {
+            types.push(
+                listItems[i].substr(6) == 0 ? "all" : listItems[i].substr(6)
+            );
+        } else if (listItems[i].includes("langs")) {
+            langs.push(
+                listItems[i].substr(6) == 0 ? "all" : listItems[i].substr(6)
+            );
+        } else if (listItems[i].includes("categories")) {
+            categories.push(
+                listItems[i].substr(11) == 0 ? "all" : listItems[i].substr(11)
+            );
         }
     }
-
+    if (types.length == 0) {
+        types = ["all"];
+    }
+    if (langs.length == 0) {
+        langs = ["all"];
+    }
+    if (categories.length == 0) {
+        categories = ["all"];
+    }
     if (numberItem > 0) {
         $("#selection-actions").removeClass("displaynone");
         $(".selected_count").html(numberItem);
     } else {
         $("#selection-actions").addClass("displaynone");
     }
-
-    $("#materials").html('<div class="bg-loading"><img src="/images/loading.gif" height="31" width="31" alt="loading..." /></div>');
-    $.get('/browse' , {author: author_id, types: types.join(","), languages: langs.join(","), categories: categories.join(","), sort: sort}, function( data ) {
-        $("#materials" ).html(data);
-    });
+    $("#materials").html(
+        '<div class="bg-loading"><img src="/images/loading.gif" height="31" width="31" alt="loading..." /></div>'
+    );
+    // $.get(
+    //     "/browse",
+    //     {
+    //         author: author_id,
+    //         types: types.join(","),
+    //         languages: langs.join(","),
+    //         categories: categories.join(","),
+    //         sort: sort,
+    //     },
+    //     function (data) {
+    //         $("#materials").html(data);
+    //     }
+    // );
     // handle url browser
-
     // window.location = url;
     $.ajax({
         type: "GET",
@@ -64,20 +89,21 @@ function ajaxGetMaterialByCondition() {
         .done(function (data) {
             let url =
                 window.origin +
-                `/browse?author_id=${author_id}&types=${types.join(
+                `/browse?author=${author_id}&types=${types.join(
                     ","
                 )}&languages=${langs.join(",")}&categories=${categories.join(
                     ","
                 )}&sort=${sort}`;
             history.pushState(null, document.title, url);
+            $("#materials").empty();
             $("#materials").html(data);
+            $('#materials-author').html(data)
             //remove loading
         })
         .fail(function (error) {
             console.log(error);
             //remove loading
         });
-    //ôi cái prettier
 }
 // $(document).ready(function () {
 //     $("#main_list").on("change", function ($e) {

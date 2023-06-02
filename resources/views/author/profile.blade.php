@@ -270,7 +270,7 @@ $(document).ready(function(){
 
 @endforeach
 
-
+{{-- @include('browse.part') --}}
 
 <script>
 

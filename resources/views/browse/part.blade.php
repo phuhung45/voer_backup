@@ -13,7 +13,7 @@
     <div class="material-cover-wrapper left">
         <div class="material-cover left">
             <a title="" alt=""
-                href="{{route('slug',['material_type' => $browse->material_type,'slug' => $browse->slug(), 'material_id' => $browse->material_id])}}">
+                href="{{route('slug',['material_type' => $browse->material_type,'slug' =>Str::slug($browse->title), 'material_id' => $browse->material_id])}}">
                 @if (!empty($browse->image))
                 <img src="images/{{ $browse->image }}" alt="{{ $browse->title }}">
                 @else
@@ -30,7 +30,7 @@
 
         <h5 class="module-title">
             <a title="{{ $browse->title }}" alt="{{ $browse->title }}"
-                href="{{route('slug',['material_type' => $browse->material_type,'slug' => $browse->slug(), 'material_id' => $browse->material_id])}}">
+                href="{{route('slug',['material_type' => $browse->material_type,'slug' =>Str::slug($browse->title), 'material_id' => $browse->material_id])}}">
                 {{$browse->title}} </a>
         </h5>
         <p>{{$browse->description}}</p>

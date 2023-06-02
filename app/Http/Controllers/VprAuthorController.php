@@ -27,12 +27,17 @@ class VprAuthorController extends Controller
             }
 
             $browses = new VprContentMaterial();
+            if($category_author->count() != 0){
             $browses = $browses->WhereIn('id', $array)->latest('modified')->paginate(12);
-                        
+            }
+            else{
+                return redirect()->back()->withErrors(['message' => 'Bạn chưa có bài viết / giáo trình nào']);
+            }
             if (request()->wantsJson()) {
                 return VprContentMaterial::collection($browses);
             }
         return view('author.profile', ['profile' => $author_profile, 'browses' => $browses]);
+ 
     }
 
     /**

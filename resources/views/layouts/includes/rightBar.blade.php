@@ -204,7 +204,8 @@
 
                 </div>
                 <!-- input hidden extra -->
-                <input id="filter-author-id" type="hidden" value="" />
+                <input id="filter-author-id" type="hidden"
+                    value="{{isset($profile) ? $profile->id : (request()->has('author') ? request()->author : '')}}" />
                 <input id="filter-sort" type="hidden" value="" />
             </div>
         </div>

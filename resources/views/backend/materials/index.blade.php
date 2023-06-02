@@ -189,11 +189,20 @@ td.test{
                                                 <td class ="test">
                                                     <a href="{{ route('admin.edit', $material->material_id) }}"
                                                         class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                                        @if ($material->material_type == 1)
+                                                            
                                                     <a href="{{route('slug',[
-                                                    'material_type' => $material->material_type,
+                                                    'material_type' => 'm',
                                                     'slug' => Str::slug($material->title),
                                                     'material_id' => $material->material_id])}}"
                                                         class="btn btn-success" target="_blank"><i class="fa-solid fa-eye"></i></a>
+                                                        @else
+                                                        <a href="{{route('slug',[
+                                                    'material_type' => 'c',
+                                                    'slug' => Str::slug($material->title),
+                                                    'material_id' => $material->material_id])}}"
+                                                        class="btn btn-success" target="_blank"><i class="fa-solid fa-eye"></i></a>
+                                                        @endif
 
                                                     <p href="#" data-mode-name="material-delete" data-mode-id="{{ $material->id }}"  data-method="DELETE" class="btn-load-url-confirm btn btn-danger" data-href="{{ route('admin.destroy', $material->id) }}"
                                                         

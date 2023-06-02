@@ -20,22 +20,91 @@ class BrowseController extends Controller
     {
         try
         {
-            $browses =  VprContentMaterial::query();
+            // $browses =  VprContentMaterial::query();
 
-            if($request->all() == NULL){
-                $browses->where('publish', '=', true)->where('deleted', false)->latest('modified');
+            // if($request->all() == NULL){
+            //     $browses->where('publish', '=', true)->where('deleted', false)->latest('modified');
+            // }
+            // if($request->author || $request->author_id){
+            //     $author_id = $request->author ?: $request->author_id;
+            //     $browses->whereHas('author', function($query) use ($author_id){
+            //         return $query->where('material_rid',$author_id);
+            //     });
+            // }
+            // if($request->languages ==  "en" || $request->languages == "vi"){
+            //     $browses->where('language',$request->languages);
+            // }
+            // if(!empty($request->types)){
+            //     $browses->where('material_type',$request->types);
+            // }
+            // if(!empty($request->categories)){
+                
+            //     $categories = explode(',', $request->categories);
+            //     foreach($categories as $category){
+            //         $browses->Where('categories', 'LIKE', "%$category%");
+            //     }
+            // }
+            // if($request->sort){
+            //     if($request->sort == 'title'){
+            //         $browses->orderBy('title','asc');
+                    
+            //     }elseif($request->sort == '-title'){
+            //         $browses->orderBy('title','desc');
+            //     }elseif($request->sort == 'modified'){
+            //         $browses->orderBy('modified','desc');
+            //     }
+            //     elseif($request->sort == '-modified'){
+            //         $browses->orderBy('modified','asc');
+            //     }
+            // }
+            $browses = DB::table('vpr_content_material');
+           
+            if($request->author || $request->author_id){
+                $author_id = $request->author ?: $request->author_id;
+                $browses->leftJoin('vpr_content_materialperson','vpr_content_material.id', '=', 'vpr_content_materialperson.material_rid')
+                ->where('vpr_content_materialperson.person_id','=', $author_id);
             }
-            if($request->languages ==  "en" || $request->languages == "vi"){
-                $browses->where('language',$request->languages);
+            if($request->has('languages') ){
+                $languages = explode(',', $request->languages);
+                if(!in_array('all', $languages)){
+                    $browses->where(function($query) use($languages) {
+                        foreach($languages as $index =>  $language){
+                            if($index==0){
+                                $query->where('language', $language);
+                            }else{
+                                $query->orWhere('language', $language);
+                            }
+                        }
+                    });
+                }
             }
-            if(!empty($request->types)){
-                $browses->where('material_type',$request->types);
+            if($request->has('types')){
+                $types = explode(',', $request->types);
+                if(!in_array('all', $types)){
+                    $browses->where(function($query) use($types) {
+                        foreach($types as $index =>  $type){
+                            if($index==0){
+                                $query->where('material_type', $type);
+                            }else{
+                                $query->orWhere('material_type', $type);
+                            }
+                        }
+                    });
+                }
+                
             }
             if(!empty($request->categories)){
-                
                 $categories = explode(',', $request->categories);
-                foreach($categories as $category){
-                    $browses->Where('categories', 'LIKE', "%$category%");
+                if(!in_array('all', $categories)){
+                    $browses->where(function($query) use($categories) {
+                        foreach($categories as $index =>  $category){
+                            if($index==0){
+                                $query->where('categories', 'LIKE', "%$category%");
+                            }else{
+                                $query->orWhere('categories', 'LIKE', "%$category%");
+                            }
+                        }
+                    });
                 }
             }
             if($request->sort){
@@ -51,7 +120,6 @@ class BrowseController extends Controller
                     $browses->orderBy('modified','asc');
                 }
             }
-
             $browses = $browses->paginate(12);
             if($request->ajax()){
                 return view('browse.part', compact('browses'));
@@ -98,7 +166,7 @@ class BrowseController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         $request->validate(
             [

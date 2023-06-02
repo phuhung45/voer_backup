@@ -173,11 +173,21 @@
                                                 <td class ="test">
                                                     <a href="{{ route('admin.edit', $item->material_id) }}"
                                                         class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                                        @if ($item->material_type == 1)
+                                                            
                                                     <a href="{{route('slug',[
-                                                    'material_type' => $item->material_type,
+                                                    'material_type' => 'm',
                                                     'slug' => Str::slug($item->title),
                                                     'material_id' => $item->material_id])}}"
-                                                        class="btn btn-success"><i class="fa-solid fa-eye"></i></a>
+                                                        class="btn btn-success" target="_blank"><i class="fa-solid fa-eye"></i></a>
+                                                        @else
+                                                    <a href="{{route('slug',[
+                                                    'material_type' => 'c',
+                                                    'slug' => Str::slug($item->title),
+                                                    'material_id' => $item->material_id])}}"
+                                                        class="btn btn-success" target="_blank"><i class="fa-solid fa-eye"></i></a>
+                                                        @endif
+
 
                                                         <p href="#" data-mode-name="material-delete" data-mode-id="{{ $item->id }}"  data-method="DELETE" class="btn-load-url-confirm btn btn-danger" data-href="{{ route('admin.destroy', $item->id) }}"
                                                         
